@@ -26,5 +26,5 @@ type sysfs_smd_open_timeout, sysfs_type, fs_type;
 type persist_file, file_type;
 type persist_data_file, file_type;
 type persist_drm_file, file_type;
-type data_drm_file, file_type;
-type efs_device_file, file_type;
+#type data_drm_file, file_type;
+#type efs_device_file, file_type;

@@ -14,4 +14,5 @@
 # limitations under the License.
 #
 
-add_lunch_combo cm_sc03e-userdebug
+add_lunch_combo validus_sc03e-userdebug
+
