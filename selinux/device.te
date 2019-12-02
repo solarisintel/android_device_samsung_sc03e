@@ -29,3 +29,4 @@ type smem_log_device, dev_type;
 
 type log_device, dev_type;
 
+type adb_device, dev_type;

@@ -38,6 +38,8 @@ allow kickstart system_file:file execute_no_trans;
 # Access to /dev/block/platform/msm_sdcc.1/by-name/m9kefs2
 allow kickstart block_device:dir { getattr write search };
 
+# Read and write to /dev/block/mmcblk0p[45]
+allow kickstart efs_block_device:blk_file { getattr rw_file_perms };
 
 allow kickstart shell_exec:file entrypoint;
 # ls on /data/qcks/

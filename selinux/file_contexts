@@ -109,3 +109,7 @@
 
 ## add 
 /dev/socket/qmux_radio/qmux_connect_socket      u:object_r:qmuxd_socket:s0
+
+#
+/dev/android_adb.*	u:object_r:adb_device:s0
+
