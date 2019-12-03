@@ -87,5 +87,5 @@ TARGET_DISABLE_ASHMEM_TRACKING := true
 # inherit from the proprietary version
 -include vendor/samsung/sc03e/BoardConfigVendor.mk
 
-
-
+# Validus standard , AospExtended optinal
+TARGET_USES_LEGACY_ADB_INTERFACE := true
