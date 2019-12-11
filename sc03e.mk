@@ -43,8 +43,12 @@ PRODUCT_PACKAGES += \
     sensors.smdk4x12
 
 # Power
+#PRODUCT_PACKAGES += \
+#    power.smdk4x12
+
+# SamsungPowerHAL
 PRODUCT_PACKAGES += \
-    power.smdk4x12
+    android.hardware.power@1.0-service.exynos4
 
 # Product specific Packages
 PRODUCT_PACKAGES += \
