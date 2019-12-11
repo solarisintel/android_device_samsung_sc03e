@@ -43,8 +43,8 @@ PRODUCT_PACKAGES += \
     sensors.smdk4x12
 
 # Power
-PRODUCT_PACKAGES += \
-    power.smdk4x12
+#PRODUCT_PACKAGES += \
+#    power.smdk4x12
 
 # Product specific Packages
 PRODUCT_PACKAGES += \
