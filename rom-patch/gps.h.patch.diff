@@ -1,0 +1,42 @@
+--- hardware/libhardware/include/hardware/gps.h.org	2019-12-03 10:25:12.699221000 +0900
++++ hardware/libhardware/include/hardware/gps.h	2019-12-03 10:25:32.471221000 +0900
+@@ -94,6 +94,7 @@
+  * delete_aiding_data().
+  */
+ typedef uint16_t GpsAidingData;
++//typedef uint32_t GpsAidingData;
+ 
+ /** AGPS type */
+ typedef uint16_t AGpsType;
+@@ -321,6 +322,12 @@
+ #define AGPS_RIL_INTERFACE      "agps_ril"
+ 
+ /**
++ * The GPS chipset can use Psc for AGPS.
++ * SC03E
++ */
++#define AGPS_USE_PSC
++
++/**
+  * Name for the GPS_Geofencing interface.
+  */
+ #define GPS_GEOFENCING_INTERFACE   "gps_geofencing"
+@@ -387,6 +394,8 @@
+     float   elevation;
+     /** Azimuth of SV in degrees. */
+     float   azimuth;
++    /** for SC03E,i9305 **/
++    uint32_t    used;
+ } GpsSvInfo;
+ 
+ typedef struct {
+@@ -481,6 +490,9 @@
+      * might rely in the old (wrong) behavior.
+      */
+     uint16_t lac;
++#ifdef AGPS_USE_PSC
++    uint16_t psc;
++#endif
+     /** Cell id in 2G. Utran Cell id in 3G. Cell Global Id EUTRA in LTE. */
+     uint32_t cid;
+     /** Tracking Area Code in LTE. */

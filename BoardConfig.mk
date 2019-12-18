@@ -57,13 +57,13 @@ TARGET_RECOVERY_DENSITY := mdpi
 TARGET_USERIMAGES_USE_F2FS := true
 RECOVERY_FSTAB_VERSION := 2
 
-# PowerHAL
-TARGET_POWERHAL_VARIANT := pegasusq
+# PowerHAL ,this is old define for cm-14.1
+#TARGET_POWERHAL_VARIANT := pegasusq
 
-# assert
+# assert, Validus not used
 TARGET_OTA_ASSERT_DEVICE := m3,m3xx,sc03e,SC-03E,i9305,GT-I9305
 
-# Linker
+# Linker, is this using ? 
 BOARD_NO_CHECK_PIE_BINARY := true
 
 ## Selinux
@@ -87,5 +87,5 @@ TARGET_DISABLE_ASHMEM_TRACKING := true
 # inherit from the proprietary version
 -include vendor/samsung/sc03e/BoardConfigVendor.mk
 
-# Validus standard , AospExtended optinal
-TARGET_USES_LEGACY_ADB_INTERFACE := true
+
+

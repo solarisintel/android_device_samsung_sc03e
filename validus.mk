@@ -9,9 +9,6 @@ TARGET_SCREEN_WIDTH := 720
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
-# Enhanced NFC
-# $(call inherit-product, vendor/validus/config/nfc_enhanced.mk)
-
 $(call inherit-product, vendor/validus/config/common_full_phone.mk)
 
 # Device identifier. This must come after all inclusions
