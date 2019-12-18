@@ -6,70 +6,83 @@ on init
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
     export LD_SHIM_LIBS /system/vendor/lib/libril.so|libsamsung_symbols.so
+
     ##
     ## cpu governor pegasusq Settings
     ##  
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_freq
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_lock_time
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_mincpus
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_down_freq
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_down_rate
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_up_freq
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_up_rate
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpucore_table
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/dvfs_debug
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/freq_step
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_1_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_2_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_2_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_3_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_3_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_4_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_lock
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_1_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_2_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_2_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_3_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_3_1
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_4_0
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/ignore_nice_load
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/min_cpu_lock
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/max_cpu_lock
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate_min
-    #chown system system /sys/devices/system/cpu/cpufreq/pegasusq/up_nr_cpus
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "pegasusq"
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "pegasusq"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "pegasusq"
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "pegasusq"
+
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_freq
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_lock_time
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/boost_mincpus
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_down_freq
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_down_rate
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_up_freq
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpu_up_rate
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/cpucore_table
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/dvfs_debug
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/freq_step
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_1_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_2_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_2_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_3_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_3_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_freq_4_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_lock
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_1_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_2_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_2_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_3_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_3_1
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/hotplug_rq_4_0
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/ignore_nice_load
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/min_cpu_lock
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/max_cpu_lock
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate_min
+    chown system system /sys/devices/system/cpu/cpufreq/pegasusq/up_nr_cpus
     #
     # cpu governor interactive Settings
     #
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
+    #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+    #write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
+    #write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
+    #write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
+    #
+    #
+    #write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
+    #write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
+    #
+    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    #
+    ## interactive original paramter
+    ##write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100
+    ##write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 85
+    ##write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
+    ##write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 80000
+    ##write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 200000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 200000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 200000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 200000
-
+    
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1600000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1600000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1600000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1600000
-
-    # original paramter
-    #write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
-    #write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 85
-    #write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
-    #write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 80000
-    #write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
-
-    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
 
     chown  system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     chown  system system /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
@@ -81,11 +94,6 @@ on init
     chown  system system /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
     chown  system system /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 
-    chown  system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chown  system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chown  system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chown  system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chown  system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 
 on post-fs-data
  #MDM requirement

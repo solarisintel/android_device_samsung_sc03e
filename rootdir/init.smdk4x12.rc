@@ -1,4 +1,4 @@
-﻿# Init for devices built on Samsung SMDK4412 platform
+# Init for devices built on Samsung SMDK4412 platform
 
 import /init.target.rc
 import /init.smdk4x12.usb.rc
@@ -71,7 +71,7 @@ on post-fs-data
     chmod 0644 /efs/h2k.dat
 
 # Camera firmware
-	mkdir /data/cfw 0775 system system
+    mkdir /data/cfw 0775 system system
     chown system media /data/cfw/SlimISP_GD.bin
     chmod 0775 /data/cfw/SlimISP_GD.bin
     chown system media /data/cfw/SlimISP_ZD.bin
@@ -469,6 +469,11 @@ on post-fs-data
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     chown wifi root /dev/rfkill
     chown wifi root /sys/module/dhd/parameters/firmware_path
+
+    # Create the directories used by the Wireless subsystem
+    mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
 
     # for TRP/TIS
     write /data/.psm.info 1
