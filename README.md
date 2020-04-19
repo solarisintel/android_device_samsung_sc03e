@@ -1,12 +1,14 @@
 
-Referenced devices from https://github.com/aex-i9300 
+Referenced devices from https://github.com/aex-i9300  
 
 Unnecessary description remained 
 
 Cpu governor is pegasusq 
+
   see kernel source and init.targert.rc 
 
 Added power module 
+
    device/power 
 
 Led class name is renamed to standard name (/dev/class/leds/red, green, blue)  
