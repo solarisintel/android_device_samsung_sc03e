@@ -20,6 +20,7 @@ Replaced hardware's source
   cp device/sc03e/patch/reference-ril.c.sc03e  hardware/ril/reference-ril/reference-ril.c   
 
 System source modified  
+
 1.SC03E charger mode  
   system/core/init/init.cpp  
   
