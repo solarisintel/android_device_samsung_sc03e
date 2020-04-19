@@ -1,5 +1,5 @@
 
-Referenced devices from https://github.com/aex-i9300 
+Referenced devices from https://github.com/aex-i9300 \\
 Unnecessary description remained 
 
 Cpu governor is pegasusq 
