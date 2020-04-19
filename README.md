@@ -23,9 +23,7 @@ System source modified
 
 1.SC03E charger mode  
   system/core/init/init.cpp  
-  
 2. support TARGET_USES_LEGACY_ADB_INTERFACE  
   system/core/adb 
-  
 3. autosuspend_earlysuspend.c added  
   system/core/libsuspend  
