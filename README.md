@@ -20,11 +20,11 @@ Replaced hardware's source
   cp device/sc03e/patch/reference-ril.c.sc03e  hardware/ril/reference-ril/reference-ril.c   
 
 System source modified  
- 1.SC03E charger mode  
+1.SC03E charger mode  
   system/core/init/init.cpp  
-
- 2. support TARGET_USES_LEGACY_ADB_INTERFACE  
+  
+2. support TARGET_USES_LEGACY_ADB_INTERFACE  
   system/core/adb 
-
- 3. autosuspend_earlysuspend.c added  
+  
+3. autosuspend_earlysuspend.c added  
   system/core/libsuspend  
