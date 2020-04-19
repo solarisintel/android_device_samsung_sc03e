@@ -1,0 +1,21 @@
+type ril-daemon_exec, exec_type, file_type;
+type ril-daemon, domain;
+
+init_daemon_domain(ril-daemon)
+net_domain(ril-daemon)
+
+allow ril-daemon system_file:file { execute_no_trans };
+allow ril-daemon self:capability { setuid };
+
+allow ril-daemon log_device:chr_file { write open };
+allow ril-daemon log_device:dir { search };
+
+allow ril-daemon ssr_device:chr_file { open };
+allow ril-daemon ssr_device:chr_file rw_file_perms;
+
+allow ril-daemon radio_device:dir search;
+allow ril-daemon radio_prop:property_service set;
+
+allow ril-daemon init:unix_stream_socket { read write };
+allow ril-daemon proc_net:file { write };
+
