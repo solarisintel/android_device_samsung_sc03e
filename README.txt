@@ -47,4 +47,5 @@ branch aex-9.x source is
    device_samsung_sc03e
    device_samsung_smdk4412-common
    hardware_ril
-   vendor_samsung_sc03
+   vendor_samsung_smdk4412-common
+   vendor_samsung_sc03e
