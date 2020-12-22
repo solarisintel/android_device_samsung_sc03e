@@ -1,0 +1,2 @@
+allow hal_wifi_default wifi_data_file:file { write getattr setattr read create unlink open };
+
