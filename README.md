@@ -14,16 +14,15 @@ https://github.com/aex-i9300/platform_manifests
 note-1) supported LTE  
   
 smdk4412-common/shim/libsecril-shim/secril-shim.cpp  
-   
+``` c   
 ....| RAF_HSPAP | RAF_UMTS | RAF_LTE, /* rat */  
-  
+```  
 note-2) WIFI fixed.   
-  
 smdk4412-common/BoardCommonConfig.mk  
-  
- ## HIDL   
+``` sh   
+# HIDL   
 DEVICE_MANIFEST_FILE := device/samsung/smdk4412-common/manifest.xml  
-  
+```   
 note-3) lineage.livedisplay is deleted.  
   
 because not existing in hardware/samsung.    
