@@ -21,7 +21,7 @@ note-2) WIFI fixed.
   
 smdk4412-common/BoardCommonConfig.mk  
   
-# HIDL   
+ ## HIDL   
 DEVICE_MANIFEST_FILE := device/samsung/smdk4412-common/manifest.xml  
   
 note-3) lineage.livedisplay is deleted.  
