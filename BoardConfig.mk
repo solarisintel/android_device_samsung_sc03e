@@ -36,10 +36,8 @@ TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 
-# Kernel 3.4 is not working ril device
-#TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412dcm-3.4
-#TARGET_KERNEL_SOURCE := kernel/samsung/ChronoMonochrome-lineage-15.1-old
-TARGET_KERNEL_SOURCE := kernel/samsung/ChronoMonochrome-lineage-15.1-old-1225
+# Kernel 3.0.101 for rild working
+TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412dcm
 TARGET_KERNEL_CONFIG := lineageos_sc03e_defconfig
 
 # Kernel(overwrite)
