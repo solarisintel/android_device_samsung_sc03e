@@ -1,0 +1,80 @@
+--- vendor/aosp/build/soong/soong_config.mk.org	2019-12-02 17:57:05.000000000 +0900
++++ vendor/aosp/build/soong/soong_config.mk	2020-12-17 05:15:37.144328000 +0900
+@@ -13,7 +13,8 @@
+ 	echo '    "BTVendorPath": "$(call project-path-for,bt-vendor)",'; \
+ 	echo '    "RILPath": "$(call project-path-for,ril)",'; \
+ 	echo '    "WLANPath": "$(call project-path-for,wlan)",'; \
+-	echo '    "Target_shim_libs": "$(subst $(space),:,$(TARGET_LD_SHIM_LIBS))"'; \
++	echo '    "Target_shim_libs": "$(subst $(space),:,$(TARGET_LD_SHIM_LIBS))",'; \
++        echo '    "Has_legacy_mmap": $(if $(filter true,$(BOARD_USES_LEGACY_MMAP)),true,false)'; \
+ 	echo '},'; \
+ 	echo '"Qualcomm": {'; \
+ 	echo '    "BoardUsesQTIHardware": $(if $(filter true,$(BOARD_USES_QTI_HARDWARE)),true,false),'; \
+@@ -29,5 +30,5 @@
+ 	echo '    "QCOMGPSPath": "$(call project-path-for,qcom-gps)",';  \
+ 	echo '    "QCOMMediaPath": "$(call project-path-for,qcom-media)",';  \
+ 	echo '    "QCOMSensorsPath": "$(call project-path-for,qcom-sensors)"';  \
+-	echo '},'; \
++ 	echo '},'; \
+ 	echo '') > $(SOONG_VARIABLES_TMP)
+--- vendor/aosp/build/soong/android/variable.go.org	2020-12-17 05:06:45.096328000 +0900
++++ vendor/aosp/build/soong/android/variable.go	2020-12-17 05:13:06.176328000 +0900
+@@ -48,10 +48,15 @@
+ 	Uses_generic_camera_parameter_library struct {
+ 		Srcs []string
+ 	}
+-	
+-		Target_shim_libs struct {
++
++	Target_shim_libs struct {
+ 		Cppflags []string
+ 	}
++
++	Has_legacy_mmap struct {
++               Cppflags []string
++	}
++
+ }
+ 
+ type ProductVariables struct {
+@@ -68,4 +73,5 @@
+ 	BoardUsesLegacyAlsa  *bool `json:",omitempty"`
+ 	Cant_reallocate_omx_buffers *bool `json:",omitempty"`
+ 	Target_shim_libs  *string `json:",omitempty"`
++	Has_legacy_mmap  *bool `json:",omitempty"`
+ }
+--- bionic/libc/Android.bp.org	2020-12-17 05:08:41.340328000 +0900
++++ bionic/libc/Android.bp	2020-12-17 05:18:51.412328000 +0900
+@@ -1529,6 +1529,11 @@
+         treble: {
+             cflags: ["-D__ANDROID_TREBLE__"],
+         },
++        aosp: {
++            has_legacy_mmap: {
++                cppflags: ["-DLEGACY_MMAP"],
++           },
++        }
+     },
+     cppflags: ["-Wold-style-cast"],
+     local_include_dirs: ["stdio"],
+--- bionic/libc/bionic/mmap.cpp.org	2020-12-17 01:55:51.000328000 +0900
++++ bionic/libc/bionic/mmap.cpp	2020-12-17 01:59:40.424328000 +0900
+@@ -38,6 +38,11 @@
+ extern "C" void*  __mmap2(void*, size_t, int, int, int, size_t);
+ 
+ #define MMAP2_SHIFT 12 // 2**12 == 4096
++#ifdef LEGACY_MMAP
++#define TO_64(a) ((a) & 0x00000000ffffffff)
++#else
++#define TO_64(a) (a)
++#endif
+ 
+ static bool kernel_has_MADV_MERGEABLE = true;
+ 
+@@ -73,5 +78,5 @@
+ }
+ 
+ void* mmap(void* addr, size_t size, int prot, int flags, int fd, off_t offset) {
+-  return mmap64(addr, size, prot, flags, fd, static_cast<off64_t>(offset));
++  return mmap64(addr, size, prot, flags, fd, TO_64(static_cast<off64_t>(offset)));
+ }
