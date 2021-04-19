@@ -1,11 +1,11 @@
 
 ### Initialize local repository
 ```
-repo init -u git://github.com/crdroidandroid/android.git -b 9.0
+$ repo init -u git://github.com/crdroidandroid/android.git -b 9.0
 ```
 ### Sync
 ```
-repo sync -j16
+$ repo sync -j16
 ```
 ### replace hardware source
 ```
