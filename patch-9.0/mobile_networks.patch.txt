@@ -1,0 +1,22 @@
+--- Pixel9/packages/apps/Settings/src/com/android/settings/network/MobileNetworkPreferenceController.java	2020-09-01 13:25:41.625803000 +0900
++++ LOS-16.0/packages/apps/Settings/src/com/android/settings/network/MobileNetworkPreferenceController.java	2020-11-24 16:57:26.052000000 +0900
+@@ -31,6 +31,8 @@
+ import android.telephony.ServiceState;
+ import android.telephony.TelephonyManager;
+ 
++import android.os.SystemProperties;
++
+ import com.android.settings.core.PreferenceControllerMixin;
+ import com.android.settingslib.RestrictedLockUtils;
+ import com.android.settingslib.RestrictedPreference;
+@@ -70,6 +72,10 @@
+ 
+     @Override
+     public boolean isAvailable() {
++        // sim config check
++        if (SystemProperties.get("ro.mobilenetwork.disabled", "").equals("true")) {
++            return false;  
++        }
+         return !isUserRestricted() && !Utils.isWifiOnly(mContext);
+     }
+ 

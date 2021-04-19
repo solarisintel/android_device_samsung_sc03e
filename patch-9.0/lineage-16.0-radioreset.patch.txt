@@ -1,0 +1,94 @@
+diff -u -r frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java.new
+--- frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java	2020-09-01 13:25:11.000000000 +0900
++++ frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java.new	2021-01-14 03:15:32.125893503 +0900
+@@ -2336,10 +2336,12 @@
+                                 && !mIsSimReady;
+                 if (mEmergencyOnly && !forceDisplayNoService) {
+                     // No service but emergency call allowed
++                    SystemProperties.set("gsm.status", "0");
+                     plmn = Resources.getSystem().
+                             getText(com.android.internal.R.string.emergency_calls_only).toString();
+                 } else {
+                     // No service at all
++                    SystemProperties.set("gsm.status", "1");
+                     plmn = Resources.getSystem().
+                             getText(com.android.internal.R.string.lockscreen_carrier_default).toString();
+                     noService = true;
+@@ -2348,12 +2350,14 @@
+                         "of service, set plmn='" + plmn + "'");
+             } else if (combinedRegState == ServiceState.STATE_IN_SERVICE) {
+                 // In either home or roaming service
++                SystemProperties.set("gsm.status", "2");
+                 plmn = mSS.getOperatorAlpha();
+                 showPlmn = !TextUtils.isEmpty(plmn) &&
+                         ((rule & SIMRecords.SPN_RULE_SHOW_PLMN)
+                                 == SIMRecords.SPN_RULE_SHOW_PLMN);
+             } else {
+                 // Power off state, such as airplane mode, show plmn as "No service"
++                SystemProperties.set("gsm.status", "3");
+                 showPlmn = true;
+                 plmn = Resources.getSystem().
+                         getText(com.android.internal.R.string.lockscreen_carrier_default).toString();
+@@ -2406,6 +2410,7 @@
+                     || !TextUtils.equals(spn, mCurSpn)
+                     || !TextUtils.equals(dataSpn, mCurDataSpn)
+                     || !TextUtils.equals(plmn, mCurPlmn)) {
++                SystemProperties.set("gsm.plmn", plmn);
+                 if (DBG) {
+                     log(String.format("updateSpnDisplay: changed sending intent rule=" + rule +
+                             " showPlmn='%b' plmn='%s' showSpn='%b' spn='%s' dataSpn='%s' " +
+diff -u -r frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java.new
+--- frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java	2020-09-01 13:25:11.000000000 +0900
++++ frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java.new	2021-01-15 09:12:21.517194000 +0900
+@@ -30,6 +30,7 @@
+ import android.os.Binder;
+ import android.os.RemoteException;
+ import android.os.ServiceManager;
++import android.os.SystemProperties;
+ import android.os.UserHandle;
+ import android.provider.Settings;
+ import android.telephony.RadioAccessFamily;
+@@ -1400,6 +1401,7 @@
+ 
+     @Override
+     public int getSlotIndex(int subId) {
++        SystemProperties.set("gsm.subid", String.valueOf(subId));
+         if (VDBG) printStackTrace("[getSlotIndex] subId=" + subId);
+ 
+         if (subId == SubscriptionManager.DEFAULT_SUBSCRIPTION_ID) {
+@@ -1407,6 +1409,7 @@
+         }
+         if (!SubscriptionManager.isValidSubscriptionId(subId)) {
+             if (DBG) logd("[getSlotIndex]- subId invalid");
++            SystemProperties.set("gsm.radioreset", "true");
+             return SubscriptionManager.INVALID_SIM_SLOT_INDEX;
+         }
+ 
+diff -u -r frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java.new
+--- frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java	2020-09-03 10:24:53.000000000 +0900
++++ frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java,new	2021-01-15 09:13:00.837194000 +0900
+@@ -33,6 +33,7 @@
+ import android.os.Message;
+ import android.os.RemoteException;
+ import android.os.ServiceManager;
++import android.os.SystemProperties;
+ import android.preference.PreferenceManager;
+ import android.provider.Settings;
+ import android.provider.Settings.Global;
+@@ -605,7 +606,6 @@
+                     // no SIM inserted last time, but there is one SIM inserted now
+                     mInsertSimState[i] = SIM_CHANGED;
+                 }
+-
+                 if (!RIL.needsOldRilFeature("fakeiccid"))
+                     oldIccId[i] = ICCID_STRING_FOR_NO_SIM;
+                 else
+@@ -853,6 +853,7 @@
+         SubscriptionManager.putPhoneIdAndSubIdExtra(i, slotId);
+         logd("Broadcasting intent ACTION_SIM_STATE_CHANGED " + state + " reason " + reason +
+              " for mCardIndex: " + slotId);
++        SystemProperties.set("gsm.sim_state", state);
+         IntentBroadcaster.getInstance().broadcastStickyIntent(i, slotId);
+     }
+
+
