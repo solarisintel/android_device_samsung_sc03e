@@ -12,7 +12,7 @@ repo sync -j16
 hardware/ril             <-- CustomRoms github(https://github.com/CustomROMs/android_hardware_ril.git)
 hardware/samsung         <-- CustomRoms github(https://github.com/CustomROMs/android_hardware_samsung.git)
 ```
-### Patching 
+### Patch system source
 Maybe it will fail, so fix it while looking diff sources by the text editor
 ```
 $ cd $HOME/crdoid-9.0/
