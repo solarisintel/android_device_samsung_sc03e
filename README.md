@@ -1,27 +1,28 @@
 
-# Initialize local repository
+### Initialize local repository
 ```
-repo init -u https://github.com/PixelExperience/manifest -b pie
+repo init -u git://github.com/crdroidandroid/android.git -b 9.0
 ```
-# Sync
+### Sync
 ```
-repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+repo sync -j16
 ```
-# Patching 
-# Maybe it will fail, so fix it while looking diff sources by the text editor
+### replace hardware source
+```
+hardware/rild            <-- CustomRoms github(lineage-16.0)
+hardware/samsung         <-- CustomRoms github(lineage-16.0)
+```
+### Patching 
+### Maybe it will fail, so fix it while looking diff sources by the text editor
 ```
 $ patch -p1 < fake-iccid-patch.txt
 $ patch -p1 < DISABLE_ASHMEM_TRACKING.patch.txt
 ```
-# Set up environment
+### Set up environment
 ```
 $ source build/envsetup.sh
 ```
-# Choose a target
+### Build the code
 ```
-$ lunch aosp_sc03e-userdebug
-```
-# Build the code
-```
-$ mka bacon -j8
+$ brunch sc03e
 ```
