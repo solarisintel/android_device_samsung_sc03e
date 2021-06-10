@@ -20,6 +20,7 @@ $ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/crdroid-9.0-earlys
 $ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/crdroid-9.0-opt-telephony.patch.txt
 $ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/lineage-16.0-ashmemtacking.patch.txt
 ...
+```
 ### Patch system source 
 gnss interface module is refer to hardware/libhardware/include/hardware
 ```
