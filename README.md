@@ -1,11 +1,11 @@
 
 ### Initialize local repository
 ```
-$ repo init -u git://github.com/crdroidandroid/android.git -b 9.0
+$ repo init --depth=1 -u https://github.com/jdcteam/manifests.git -b opt-cm-17.1
 ```
 ### Sync
 ```
-$ repo sync -j16
+$ repo sync -c --current-branch  -j8 --force-sync --no-clone-bundle --no-tags
 ```
 ### replace hardware source
 ```
@@ -15,24 +15,30 @@ hardware/samsung         <-- CustomRoms github(https://github.com/CustomROMs/and
 ### Patch system source
 Maybe it will fail, so fix it while looking diff sources by the text editor
 ```
-$ cd $HOME/crdoid-9.0/
-$ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/crdroid-9.0-earlysupend.patch.txt
-$ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/crdroid-9.0-opt-telephony.patch.txt
-$ patch -p1 < $HOME/crdoid-9.0/device/samsung/sc03e/patch-9.0/lineage-16.0-ashmemtacking.patch.txt
+$ cd $HOME/opt-cm-17.1/
+$ patch -p0 < device/samsung/sc03e/10-patch/assert.diff
+$ patch -p0 < device/samsung/sc03e/10-patch/bionic.diff
+$ patch -p0 < device/samsung/sc03e/10-patch/frameworks-base.diff
 ...
 ```
-### Patch system source 
-gnss interface module is refer to hardware/libhardware/include/hardware
-```
-$ cp $HOME/crdoid-9.0/device/samsung/sc03e/include/hardware/gps.h \
-     $HOME/crdoid-9.0/hardware/libhardware/include/hardware
-...
-```
-### Set up environment
+### Set up environment, select device sc03e
 ```
 $ source build/envsetup.sh
+$ lunch 
 ```
 ### Build the code
 ```
-$ brunch sc03e
+$ mka bacon -j8
 ```
+
+### Not working
+ril(phone, mobile-data)  
+  
+### Working
+Audio  
+Bluetooth  
+Graphics  
+Cameras  
+Sensors  
+Wifi  
+USB  

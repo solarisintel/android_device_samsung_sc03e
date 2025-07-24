@@ -6,7 +6,8 @@ include $(CLEAR_VARS)
 LOCAL_SHARED_LIBRARIES := \
     libutils \
     libcutils \
-    liblog
+    liblog \
+    libprocessgroup
 
 LOCAL_SRC_FILES += \
     sec_gps.c \
@@ -46,10 +47,9 @@ LOCAL_COPY_HEADERS:= \
 
 
 LOCAL_MODULE := libgps.utils
+LOCAL_MODULE_OWNER := qcom
+LOCAL_VENDOR_MODULE := true
 
 LOCAL_MODULE_TAGS := optional
 
-LOCAL_PRELINK_MODULE := false
-
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
 include $(BUILD_SHARED_LIBRARY)

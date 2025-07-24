@@ -24,15 +24,21 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
+# Init files, 10.0's boot.img is fstab, kernel, init only
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/fstab.smdk4x12:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.smdk4x12 \
+    $(LOCAL_PATH)/rootdir/fstab.smdk4x12:$(TARGET_COPY_OUT_RAMDISK)/fstab.smdk4x12
+
 # Init files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/fstab.smdk4x12:root/fstab.smdk4x12 \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc \
-    $(LOCAL_PATH)/rootdir/init.target.usb.rc:root/init.target.usb.rc
+    $(LOCAL_PATH)/rootdir/init.target.usb.rc:root/init.target.usb.rc \
+    $(LOCAL_PATH)/rootdir/ueventd.smdk4x12.rc:root/ueventd.smdk4x12.rc
 
 # Audio
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/m3
+    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/sc03e
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -62,42 +68,11 @@ PRODUCT_PACKAGES += \
     SamsungServiceMode \
     tinyplay
 
-# NFC
-#PRODUCT_PACKAGES += \
-#    nfc.exynos4 \
-#    libnfc \
-#    libnfc_jni \
-#    Nfc \
-#    Tag
-#
-
-# Camera
-PRODUCT_PACKAGES += \
-    camera.smdk4x12
-
 # f2fs
 PRODUCT_PACKAGES += \
 	fibmap.f2fs \
 	fsck.f2fs \
 	mkfs.f2fs
-
-# NFC 
-#PRODUCT_COPY_FILES += \
-#    frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
-#    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
-
-# NFCEE access control
-#ifeq ($(TARGET_BUILD_VARIANT),user)
-#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfcee_access.xml
-#else
-#    NFCEE_ACCESS_PATH := $(LOCAL_PATH)/configs/nfcee_access_debug.xml
-#endif
-
-#PRODUCT_COPY_FILES += \
-#    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
-#
-#PRODUCT_PACKAGES += \
-#    com.android.nfc_extras
 
 # Memtrack
 PRODUCT_PACKAGES += \
@@ -123,13 +98,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
-# UMS
-#PRODUCT_COPY_FILES += \
-#    $(LOCAL_PATH)/configs/ums_init.sh:system/bin/ums_init.sh
-
 # GPS
 PRODUCT_PACKAGES += \
-    gps.default \
+    gps.smdk4x12 \
     libgps.utils \
     libloc_core \
     libloc_eng
@@ -147,9 +118,6 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product, vendor/samsung/sc03e/sc03e-vendor.mk)
 
 # drm 
-$(call inherit-product, vendor/widevine/arm-generic/widevine-vendor.mk)
-
-# drm 
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service
@@ -161,3 +129,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Vendor properties
 -include $(LOCAL_PATH)/vendor_prop.mk
 
+# bootanimation 
+PRODUCT_PACKAGES += \
+    bootanimation.zip
+
+# Proprietary blobs dependency on libstlport
+PRODUCT_PACKAGES +=  libstlport

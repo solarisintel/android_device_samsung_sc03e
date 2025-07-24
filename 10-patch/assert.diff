@@ -1,6 +1,6 @@
---- build/tools/releasetools/edify_generator.py.old	2020-11-02 11:21:04.590975000 +0900
-+++ build/tools/releasetools/edify_generator.py	2020-11-02 11:22:42.182975000 +0900
-@@ -145,13 +145,7 @@
+--- build/tools/releasetools/edify_generator.py.orig	2021-11-10 15:21:56.334712353 +0900
++++ build/tools/releasetools/edify_generator.py	2022-01-05 12:04:55.641912950 +0900
+@@ -137,13 +137,7 @@
  
    def AssertDevice(self, device):
      """Assert that the device identifier is the given string."""

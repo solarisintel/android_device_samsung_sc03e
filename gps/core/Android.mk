@@ -4,6 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := libloc_core
 LOCAL_MODULE_OWNER := qcom
+LOCAL_VENDOR_MODULE := true
 
 LOCAL_MODULE_TAGS := optional
 
@@ -12,7 +13,8 @@ LOCAL_SHARED_LIBRARIES := \
     libcutils \
     liblog \
     libgps.utils \
-    libdl
+    libdl \
+    libprocessgroup
 
 LOCAL_SRC_FILES += \
     MsgTask.cpp \
@@ -41,8 +43,6 @@ LOCAL_COPY_HEADERS:= \
     gps_extended_c.h \
     gps_extended.h \
     loc_core_log.h
-
-LOCAL_PRELINK_MODULE := false
 
 include $(BUILD_SHARED_LIBRARY)
 

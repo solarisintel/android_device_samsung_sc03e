@@ -49,30 +49,6 @@ on init
     chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
     chown system system /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate_min
     chown system system /sys/devices/system/cpu/cpufreq/pegasusq/up_nr_cpus
-    #
-    # cpu governor interactive Settings
-    #
-    #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    #write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor "interactive"
-    #write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
-    #write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor "interactive"
-    #
-    #
-    #write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 0
-    #write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
-    #
-    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    #chown  system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    #
-    ## interactive original paramter
-    ##write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 100
-    ##write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 85
-    ##write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1600000
-    ##write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 80000
-    ##write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
 
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 200000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 200000
@@ -115,7 +91,10 @@ on post-fs-data
     chown system radio /dev/block/modem/dump_path
     chmod 0775 /dev/block/modem/dump_path
 
-    mkdir /firmware 0771 system system
+#    mkdir /firmware 0771 system system
+    chown system system /firmware
+    chmod 0775 /firmware
+
     chown system system /tombstones
     chmod 0775 /tombstones
     mkdir /tombstones/modem 0775 system system
@@ -227,7 +206,7 @@ on post-fs-data
 
 on fs
     # zram
-    swapon_all /fstab.smdk4x12
+    swapon_all /vendor/etc/fstab.smdk4x12
 
 on boot
 
@@ -240,24 +219,24 @@ on property:sys.boot_completed=1
     write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2
 
 # this service use /dev/mdm
-service qc_kickstart /system/bin/qcks s
+service qc_kickstart /system/vendor/bin/qcks s
     class core
     user root
     group radio cache inet misc audio sdcard_rw log
 
 ## For EncryptionMode - remove disabled, Modify class main
-service qmiproxy /system/bin/qmiproxy
+service qmiproxy /system/vendor/bin/qmiproxy
     class main
     user radio
     group radio gps
 
-service SMD-daemon /system/bin/smdexe
+service SMD-daemon /system/vendor/bin/smdexe
     class main
     user root
     group system radio inet net_raw
 
 # this service use /dev/hsic**
-service qmuxd /system/bin/qmuxd
+service qmuxd /system/vendor/bin/qmuxd
     class main
     user system
     group radio log audio bluetooth gps log

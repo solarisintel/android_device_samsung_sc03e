@@ -2630,6 +2630,12 @@ static int set_sched_policy(int tid, SchedPolicy policy)
 }
 #endif /* USE_GLIB */
 
+
+int set_sched_policy(int tid, SchedPolicy policy)
+{
+    return 0;
+}
+
 /*===========================================================================
 FUNCTION    loc_eng_read_config
 

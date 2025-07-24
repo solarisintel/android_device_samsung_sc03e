@@ -1,0 +1,301 @@
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/RIL.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/RIL.java.new
+index 83398b62c..fddaa3cf7 100644
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/RIL.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/RIL.java.new
+@@ -209,7 +209,6 @@ public class RIL extends BaseCommands implements CommandsInterface {
+     AtomicBoolean mTestingEmergencyCall = new AtomicBoolean(false);
+ 
+     final Integer mPhoneId;
+-    private List<String> mOldRilFeatures;
+     private boolean mUseOldMncMccFormat;
+ 
+     /**
+@@ -582,9 +581,6 @@ public class RIL extends BaseCommands implements CommandsInterface {
+             mRadioBugDetector = new RadioBugDetector(context, mPhoneId);
+         }
+ 
+-        final String oldRilFeatures = SystemProperties.get("ro.telephony.ril.config", "");
+-        mOldRilFeatures = Arrays.asList(oldRilFeatures.split(","));
+-
+         mUseOldMncMccFormat = SystemProperties.getBoolean(
+                 "ro.telephony.use_old_mnc_mcc_format", false);
+ 
+@@ -6154,7 +6150,9 @@ public class RIL extends BaseCommands implements CommandsInterface {
+         return mRadioVersion;
+     }
+ 
+-    public boolean needsOldRilFeature(String feature) {
+-        return mOldRilFeatures.contains(feature);
++    public static boolean needsOldRilFeature(String feature) {
++        List<String> oldRilFeatures = Arrays.asList(SystemProperties.get("ro.telephony.ril.config", "").split(","));
++
++        return oldRilFeatures.contains(feature);
+     }
+ }
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java.new
+index d141f6550..fdb8a39bb 100755
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/ServiceStateTracker.java.new
+@@ -2655,10 +2655,12 @@ public class ServiceStateTracker extends Handler {
+                 final boolean forceDisplayNoService = shouldForceDisplayNoService() && !mIsSimReady;
+                 if (!forceDisplayNoService && Phone.isEmergencyCallOnly()) {
+                     // No service but emergency call allowed
++                    SystemProperties.set("gsm.status", "0");
+                     plmn = Resources.getSystem().
+                             getText(com.android.internal.R.string.emergency_calls_only).toString();
+                 } else {
+                     // No service at all
++                    SystemProperties.set("gsm.status", "1");
+                     plmn = Resources.getSystem().
+                             getText(com.android.internal.R.string.lockscreen_carrier_default).toString();
+                     noService = true;
+@@ -2667,6 +2669,7 @@ public class ServiceStateTracker extends Handler {
+                         "of service, set plmn='" + plmn + "'");
+             } else if (combinedRegState == ServiceState.STATE_IN_SERVICE) {
+                 // In either home or roaming service
++                SystemProperties.set("gsm.status", "2");
+                 plmn = mSS.getOperatorAlpha();
+                 showPlmn = !TextUtils.isEmpty(plmn) &&
+                         ((rule & CARRIER_NAME_DISPLAY_BITMASK_SHOW_PLMN)
+@@ -2674,6 +2677,7 @@ public class ServiceStateTracker extends Handler {
+                 if (DBG) log("updateSpnDisplay: rawPlmn = " + plmn);
+             } else {
+                 // Power off state, such as airplane mode, show plmn as "No service"
++                SystemProperties.set("gsm.status", "3");
+                 showPlmn = true;
+                 plmn = Resources.getSystem().
+                         getText(com.android.internal.R.string.lockscreen_carrier_default).toString();
+@@ -2726,6 +2730,8 @@ public class ServiceStateTracker extends Handler {
+ 
+             // mOperatorAlpha contains the ERI text
+             plmn = mSS.getOperatorAlpha();
++            SystemProperties.set("gsm.plmn", plmn);
++
+             if (DBG) log("updateSpnDisplay: cdma rawPlmn = " + plmn);
+ 
+             showPlmn = plmn != null;
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java.new
+index c5afc6614..7abfb1346 100644
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionController.java.new
+@@ -37,6 +37,7 @@ import android.os.Binder;
+ import android.os.ParcelUuid;
+ import android.os.RemoteException;
+ import android.os.ServiceManager;
++import android.os.SystemProperties;
+ import android.os.UserHandle;
+ import android.provider.Settings;
+ import android.telecom.PhoneAccountHandle;
+@@ -1949,6 +1950,7 @@ public class SubscriptionController extends ISub.Stub {
+ 
+     @Override
+     public int getSlotIndex(int subId) {
++        SystemProperties.set("gsm.subid", String.valueOf(subId));
+         if (VDBG) printStackTrace("[getSlotIndex] subId=" + subId);
+ 
+         if (subId == SubscriptionManager.DEFAULT_SUBSCRIPTION_ID) {
+@@ -1956,6 +1958,7 @@ public class SubscriptionController extends ISub.Stub {
+         }
+         if (!SubscriptionManager.isValidSubscriptionId(subId)) {
+             if (DBG) logd("[getSlotIndex]- subId invalid");
++            SystemProperties.set("gsm.radioreset", "true");
+             return SubscriptionManager.INVALID_SIM_SLOT_INDEX;
+         }
+ 
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java.new
+index dbfd56a2f..50ca42a2b 100644
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/SubscriptionInfoUpdater.java.new
+@@ -36,6 +36,7 @@ import android.os.ParcelUuid;
+ import android.os.PersistableBundle;
+ import android.os.RemoteException;
+ import android.os.ServiceManager;
++import android.os.SystemProperties;
+ import android.preference.PreferenceManager;
+ import android.provider.Settings;
+ import android.provider.Settings.Global;
+@@ -63,6 +64,9 @@ import com.android.internal.telephony.uicc.IccUtils;
+ import com.android.internal.telephony.uicc.UiccCard;
+ import com.android.internal.telephony.uicc.UiccController;
+ import com.android.internal.telephony.uicc.UiccSlot;
++import com.android.internal.telephony.RIL;
++
++import static com.android.internal.telephony.uicc.IccConstants.FAKE_ICCID;
+ 
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
+@@ -97,6 +101,9 @@ public class SubscriptionInfoUpdater extends Handler {
+     private static final ParcelUuid REMOVE_GROUP_UUID =
+             ParcelUuid.fromString(CarrierConfigManager.REMOVE_GROUP_UUID_STRING);
+ 
++    // Fake ICCID
++    private static final String FAKE_ICCID = "00000000000001";
++
+     // Key used to read/write the current IMSI. Updated on SIM_STATE_CHANGED - LOADED.
+     public static final String CURR_SUBID = "curr_subid";
+ 
+@@ -573,16 +580,23 @@ public class SubscriptionInfoUpdater extends Handler {
+         if (mIccId[slotId] != null && !mIccId[slotId].equals(ICCID_STRING_FOR_NO_SIM)) {
+             logd("SIM" + (slotId + 1) + " hot plug out, absentAndInactive=" + absentAndInactive);
+         }
+-        mIccId[slotId] = ICCID_STRING_FOR_NO_SIM;
++
++        if (!RIL.needsOldRilFeature("fakeiccid"))
++            mIccId[slotId] = ICCID_STRING_FOR_NO_SIM;
++        else
++            mIccId[slotId] = FAKE_ICCID;
++
+         updateSubscriptionInfoByIccId(slotId, true /* updateEmbeddedSubs */);
+         // Do not broadcast if the SIM is absent and inactive, because the logical slotId here is
+         // no longer correct
+-        if (absentAndInactive == 0) {
+-            broadcastSimStateChanged(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT, null);
+-            broadcastSimCardStateChanged(slotId, TelephonyManager.SIM_STATE_ABSENT);
+-            broadcastSimApplicationStateChanged(slotId, TelephonyManager.SIM_STATE_UNKNOWN);
+-            updateSubscriptionCarrierId(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT);
+-            updateCarrierServices(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT);
++        if (!RIL.needsOldRilFeature("fakeiccid")) {
++            if (absentAndInactive == 0) {
++                broadcastSimStateChanged(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT, null);
++                broadcastSimCardStateChanged(slotId, TelephonyManager.SIM_STATE_ABSENT);
++                broadcastSimApplicationStateChanged(slotId, TelephonyManager.SIM_STATE_UNKNOWN);
++                updateSubscriptionCarrierId(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT);
++                updateCarrierServices(slotId, IccCardConstants.INTENT_VALUE_ICC_ABSENT);
++            }
+         }
+     }
+ 
+@@ -590,14 +604,22 @@ public class SubscriptionInfoUpdater extends Handler {
+         if (mIccId[slotId] != null && !mIccId[slotId].equals(ICCID_STRING_FOR_NO_SIM)) {
+             logd("SIM" + (slotId + 1) + " Error ");
+         }
+-        mIccId[slotId] = ICCID_STRING_FOR_NO_SIM;
++
++        if (!RIL.needsOldRilFeature("fakeiccid"))
++               mIccId[slotId] = ICCID_STRING_FOR_NO_SIM;
++        else
++               mIccId[slotId] = FAKE_ICCID;
++
+         updateSubscriptionInfoByIccId(slotId, true /* updateEmbeddedSubs */);
+-        broadcastSimStateChanged(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR,
+-                IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
+-        broadcastSimCardStateChanged(slotId, TelephonyManager.SIM_STATE_CARD_IO_ERROR);
+-        broadcastSimApplicationStateChanged(slotId, TelephonyManager.SIM_STATE_NOT_READY);
+-        updateSubscriptionCarrierId(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
+-        updateCarrierServices(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
++
++        if (!RIL.needsOldRilFeature("fakeiccid")) {
++             broadcastSimStateChanged(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR,
++                    IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
++             broadcastSimCardStateChanged(slotId, TelephonyManager.SIM_STATE_CARD_IO_ERROR);
++             broadcastSimApplicationStateChanged(slotId, TelephonyManager.SIM_STATE_NOT_READY);
++             updateSubscriptionCarrierId(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
++             updateCarrierServices(slotId, IccCardConstants.INTENT_VALUE_ICC_CARD_IO_ERROR);
++        }
+     }
+ 
+     protected synchronized void updateSubscriptionInfoByIccId(int slotIndex,
+@@ -1064,6 +1086,7 @@ public class SubscriptionInfoUpdater extends Handler {
+         SubscriptionManager.putPhoneIdAndSubIdExtra(i, slotId);
+         logd("Broadcasting intent ACTION_SIM_STATE_CHANGED " + state + " reason " + reason +
+                 " for phone: " + slotId);
++        SystemProperties.set("gsm.sim_state", state);
+         IntentBroadcaster.getInstance().broadcastStickyIntent(i, slotId);
+     }
+ 
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/IccConstants.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/IccConstants.java.new
+index 3479412a6..c8ca74d8c 100644
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/IccConstants.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/IccConstants.java.new
+@@ -112,4 +112,7 @@ public interface IccConstants {
+ 
+     //UICC access
+     static final String DF_ADF = "7FFF";
++
++    // Fake ICCID
++    static final String FAKE_ICCID = "00000000000001";
+ }
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/RuimRecords.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/RuimRecords.java.new
+index ff4aad8fe..9757688a2 100644
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/RuimRecords.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/RuimRecords.java.new
+@@ -33,11 +33,14 @@ import android.util.Log;
+ import com.android.internal.telephony.CommandsInterface;
+ import com.android.internal.telephony.GsmAlphabet;
+ import com.android.internal.telephony.MccTable;
++import com.android.internal.telephony.RIL;
+ import com.android.internal.telephony.SubscriptionController;
+ import com.android.internal.telephony.cdma.sms.UserData;
+ import com.android.internal.telephony.uicc.IccCardApplicationStatus.AppType;
+ import com.android.internal.util.BitwiseInputStream;
+ 
++import static com.android.internal.telephony.uicc.IccConstants.FAKE_ICCID;
++
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
+ import java.util.ArrayList;
+@@ -684,12 +687,17 @@ public class RuimRecords extends IccRecords {
+                 ar = (AsyncResult)msg.obj;
+                 data = (byte[])ar.result;
+ 
+-                if (ar.exception != null) {
+-                    break;
+-                }
++                if (!RIL.needsOldRilFeature("fakeiccid")) {
++                    if (ar.exception != null) {
++                        break;
++                    }
+ 
+-                mIccId = IccUtils.bcdToString(data, 0, data.length);
+-                mFullIccId = IccUtils.bchToString(data, 0, data.length);
++                    mIccId = IccUtils.bcdToString(data, 0, data.length);
++                    mFullIccId = IccUtils.bchToString(data, 0, data.length);
++                } else {
++                    mIccId = FAKE_ICCID;
++                    mFullIccId = FAKE_ICCID;
++                }
+ 
+                 log("iccid: " + SubscriptionInfo.givePrintableIccid(mFullIccId));
+ 
+diff --git ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/SIMRecords.java ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/SIMRecords.java.new
+index 4f5f37068..98891e1b5 100755
+--- ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/SIMRecords.java
++++ ./frameworks/opt/telephony/src/java/com/android/internal/telephony/uicc/SIMRecords.java.new
+@@ -31,11 +31,14 @@ import android.text.TextUtils;
+ 
+ import com.android.internal.telephony.CommandsInterface;
+ import com.android.internal.telephony.MccTable;
++import com.android.internal.telephony.RIL;
+ import com.android.internal.telephony.SmsConstants;
+ import com.android.internal.telephony.SubscriptionController;
+ import com.android.internal.telephony.gsm.SimTlv;
+ import com.android.internal.telephony.uicc.IccCardApplicationStatus.AppType;
+ 
++import static com.android.internal.telephony.uicc.IccConstants.FAKE_ICCID;
++
+ import java.io.FileDescriptor;
+ import java.io.PrintWriter;
+ import java.util.ArrayList;
+@@ -823,12 +826,17 @@ public class SIMRecords extends IccRecords {
+                     ar = (AsyncResult) msg.obj;
+                     data = (byte[]) ar.result;
+ 
+-                    if (ar.exception != null) {
+-                        break;
+-                    }
++                    if (!RIL.needsOldRilFeature("fakeiccid")) {
++                        if (ar.exception != null) {
++                            break;
++                        }
+ 
+-                    mIccId = IccUtils.bcdToString(data, 0, data.length);
+-                    mFullIccId = IccUtils.bchToString(data, 0, data.length);
++                        mIccId = IccUtils.bcdToString(data, 0, data.length);
++                        mFullIccId = IccUtils.bchToString(data, 0, data.length);
++                    } else {
++                        mIccId = FAKE_ICCID;
++                        mFullIccId = FAKE_ICCID;
++                    }
+ 
+                     log("iccid: " + SubscriptionInfo.givePrintableIccid(mFullIccId));
+                     break;

@@ -1,0 +1,11 @@
+--- vendor/jdc/config/common.mk.old	2025-06-19 21:18:30.929863246 +0900
++++ vendor/jdc/config/common.mk	2025-06-19 21:18:38.245717503 +0900
+@@ -1,6 +1,6 @@
+ # Bootanimation
+-PRODUCT_COPY_FILES += \
+-    vendor/jdc/prebuilt/common/bootanimation/bootanimation.zip:system/media/bootanimation.zip
++#PRODUCT_COPY_FILES += \
++#    vendor/jdc/prebuilt/common/bootanimation/bootanimation.zip:system/media/bootanimation.zip
+ 
+ # Custom init script
+ PRODUCT_COPY_FILES += \

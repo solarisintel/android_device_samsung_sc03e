@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,4 @@
 # limitations under the License.
 #
 
-PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_sc03e.mk
-
-COMMON_LUNCH_CHOICES := \
-    lineage_sc03e-userdebug
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/BOOTANIMATION)
