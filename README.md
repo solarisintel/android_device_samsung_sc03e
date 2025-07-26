@@ -41,6 +41,6 @@ Graphics
 Cameras  
 Sensors  
 Wifi  
-USB
-Leds
+USB  
+Leds  
 
