@@ -42,5 +42,3 @@ Cameras
 Sensors  
 Wifi  
 USB  
-Leds  
-

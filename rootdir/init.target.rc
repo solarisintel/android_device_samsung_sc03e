@@ -92,11 +92,12 @@ on post-fs-data
     chmod 0775 /dev/block/modem/dump_path
 
 #    mkdir /firmware 0771 system system
-    chown system system /firmware
-    chmod 0775 /firmware
+#    chown system system /firmware
+#    chmod 0771 /firmware
 
-    chown system system /tombstones
-    chmod 0775 /tombstones
+#    chown system system /tombstones
+#    chmod 0775 /tombstones
+
     mkdir /tombstones/modem 0775 system system
     mkdir /tombstones/lpass 0775 system system
     mkdir /tombstones/wcnss 0775 system system
