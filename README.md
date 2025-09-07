@@ -13,7 +13,7 @@ hardware/samsung
  <-- rINanDO github(https://github.com/rINanDO/android_hardware_samsung.git)  
   
 hardware/samsung/exynos4/hal/libgralloc_ump  
- <-- CustomRoms github(https://github.com/rINanDO/android_hardware_samsung.git)  
+ <-- CustomRoms github(https://github.com/CustomRoms/android_hardware_samsung.git)  
 ```
 ### Patch system source
 Maybe it will fail, so fix it while looking diff sources by the text editor
