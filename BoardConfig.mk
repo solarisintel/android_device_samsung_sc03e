@@ -22,6 +22,8 @@ WIFI_DRIVER_MODULE_PATH :=
 MALLOC_SVELTE := true
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 LIBART_IMG_BASE := 0x30000000
+TARGET_LD_SHIM_LIBS := \
+    /system/vendor/lib/libsec-ril.so|libsamsung_symbols.so
 
 # Graphics
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
@@ -51,37 +53,23 @@ TARGET_POWERHAL_VARIANT := pegasusq
 # assert
 TARGET_OTA_ASSERT_DEVICE := m3,sc03e,SC-03E
 
-# Radio
-TARGET_LD_SHIM_LIBS += \
-   /system/vendor/lib/libsec-ril.so|libshim_ril.so
+# Properties
+TARGET_SYSTEM_PROP += device/samsung/sc03e/system.prop
 
-# RIL for sc03e
-BOARD_PROVIDES_LIBRIL := true
+## modem reconigize for sc03e
 BOARD_MODEM_TYPE := mdm9x35
-BOARD_RIL_CLASS := ../../../device/samsung/sc03e/ril
 BOARD_MOBILEDATA_INTERFACE_NAME := "pdp0,gprs,ppp0,rmnet0,rmnet1"
 
-BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
-
-# Legacy BLOB Support
-TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
-    /system/vendor/lib/libsec-ril.so=19
+# Releasetools
+TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/sc03e/releasetools
 
 # GPS
 TARGET_NO_RPC := true
 
-## Selinux
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/qcom/sepolicy-legacy/public
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/qcom/sepolicy-legacy/private
-BOARD_SEPOLICY_DIRS += \
-    device/qcom/sepolicy-legacy/common \
-    device/qcom/sepolicy-legacy/ssg \
-    device/samsung/sc03e/selinux
+# Radio
+TARGET_LD_SHIM_LIBS += \
+   /system/vendor/lib/libsec-ril.so|libshim_ril.so
 
-#BOARD_SEPOLICY_DIRS += device/samsung/sc03e/selinux
 
-## modem reconigize
-BOARD_MODEM_TYPE := mdm9x35
-BOARD_RIL_CLASS := ../../../device/samsung/sc03e/ril
-BOARD_MOBILEDATA_INTERFACE_NAME := "pdp0,gprs,ppp0,rmnet0,rmnet1"
+
 

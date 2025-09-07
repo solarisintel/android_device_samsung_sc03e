@@ -1,24 +1,24 @@
 # Release name
 PRODUCT_RELEASE_NAME := sc03e
 
-# Inherit from the common Open Source product configuration
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
 # Inherit device configuration
 $(call inherit-product, device/samsung/smdk4412-common/common.mk)
 $(call inherit-product, device/samsung/sc03e/sc03e.mk)
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
-
-# Inherit some JDCTeam stuff.
-$(call inherit-product, vendor/jdc/config/common.mk)
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 720
 
 TARGET_USE_OLD_SOUND_PICKER := true
+
+# Inherit some common stuff.
+$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+
+# Inherit some common stuff.
+$(call inherit-product, vendor/jdc/config/common.mk)
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := sc03e
@@ -35,3 +35,6 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 
 BUILD_FINGERPRINT := samsung/SC-03E/SC-03E:4.1.1/JRO03C/SC03EOMAMB1:user/release-keys
 
+# bootanimation 
+PRODUCT_PACKAGES += \
+    bootanimation.zip

@@ -24,21 +24,16 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
-# Init files, 10.0's boot.img is fstab, kernel, init only
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/fstab.smdk4x12:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.smdk4x12 \
-    $(LOCAL_PATH)/rootdir/fstab.smdk4x12:$(TARGET_COPY_OUT_RAMDISK)/fstab.smdk4x12
-
 # Init files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/fstab.smdk4x12:root/fstab.smdk4x12 \
+    $(LOCAL_PATH)/rootdir/fstab.smdk4x12:$(TARGET_COPY_OUT_RAMDISK)/fstab.smdk4x12 \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc \
-    $(LOCAL_PATH)/rootdir/init.target.usb.rc:root/init.target.usb.rc \
-    $(LOCAL_PATH)/rootdir/ueventd.smdk4x12.rc:root/ueventd.smdk4x12.rc
+    $(LOCAL_PATH)/rootdir/init.target.usb.rc:root/init.target.usb.rc
 
 # Audio
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/tiny_hw.xml:system/etc/sound/sc03e
+    $(LOCAL_PATH)/configs/tiny_hw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sound/sc03e
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -48,18 +43,28 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     power.smdk4x12
 
+# Gps
+PRODUCT_PACKAGES += \
+    gps.smdk4x12 \
+    libgps.utils \
+    libloc_core \
+    libloc_eng
+
+# GPS
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.gps.agps_provider=1 \
+    ro.qc.sdk.izat.premium_enabled=0 \
+    ro.qc.sdk.izat.service_mask=0x0 \
+    persist.gps.qc_nlp_in_use=0
+
+# GPS
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/gps/etc/gps.conf:/system/etc/gps.conf \
+    $(LOCAL_PATH)/gps/etc/sap.conf:/system/etc/sap.conf
+
 # Keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl
-
-
-## RIL
-PRODUCT_PACKAGES += \
-    libshim_ril
-
-# RIL (smdk4412-common)
-PRODUCT_PACKAGES += \
-    libsecril-shim
 
 # Product specific Packages
 PRODUCT_PACKAGES += \
@@ -68,20 +73,23 @@ PRODUCT_PACKAGES += \
     SamsungServiceMode \
     tinyplay
 
+# RIL
+PRODUCT_PACKAGES += \
+	libsamsung_symbols \
+	libsecril-shim
+
+# Proprietary blobs dependency on libstlport
+PRODUCT_PACKAGES +=  libstlport
+
+# Camera
+PRODUCT_PACKAGES += \
+    camera.smdk4x12
+
 # f2fs
 PRODUCT_PACKAGES += \
 	fibmap.f2fs \
 	fsck.f2fs \
 	mkfs.f2fs
-
-# Memtrack
-PRODUCT_PACKAGES += \
-    memtrack.smdk4x12 \
-    android.hardware.memtrack@1.0-impl
-
-# RIL
-PRODUCT_PROPERTY_OVERRIDES += \
-    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -89,49 +97,23 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.call_ring.multiple=false \
     ro.telephony.call_ring.delay=3000
 
-# frameworks/opt/telephony modding, i did not patch
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.ril.config=fakeiccid
+    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 
-# GPS
-PRODUCT_PACKAGES += \
-    gps.smdk4x12 \
-    libgps.utils \
-    libloc_core \
-    libloc_eng
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.gps.agps_provider=1 \
-    ro.qc.sdk.izat.premium_enabled=0 \
-    ro.qc.sdk.izat.service_mask=0x0 \
-    persist.gps.qc_nlp_in_use=0
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/gps/etc/gps.conf:/system/etc/gps.conf \
-    $(LOCAL_PATH)/gps/etc/sap.conf:/system/etc/sap.conf
-
 $(call inherit-product, vendor/samsung/sc03e/sc03e-vendor.mk)
-
-# drm 
-PRODUCT_PACKAGES += \
-    android.hardware.drm@1.0-impl \
-    android.hardware.drm@1.0-service
-
-# drm
-PRODUCT_PROPERTY_OVERRIDES += \
-    drm.service.enabled=true
 
 # Vendor properties
 -include $(LOCAL_PATH)/vendor_prop.mk
 
-# bootanimation 
+## RIL
 PRODUCT_PACKAGES += \
-    bootanimation.zip
+    libshim_ril
 
-# Proprietary blobs dependency on libstlport
-PRODUCT_PACKAGES +=  libstlport
+# RIL (smdk4412-common)
+PRODUCT_PACKAGES += \
+    libsecril-shim

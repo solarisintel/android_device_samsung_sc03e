@@ -193,7 +193,7 @@ struct m0_dev_cfg {
 };
 
 /* QCOM CSD-Client */
-#define CSD_CLIENT_LIBPATH "/system/lib/libcsd-client.so"
+#define CSD_CLIENT_LIBPATH "/vendor/lib/libcsd-client.so"
 
 void *mCsdHandle;
 int rx_dev_id, tx_dev_id, old_rx_dev;
@@ -1672,34 +1672,46 @@ static int in_set_parameters(struct audio_stream *stream, const char *kvpairs)
 
     pthread_mutex_lock(&adev->lock);
     pthread_mutex_lock(&in->lock);
-    if (ret >= 0) {
-        val = atoi(value);
-        /* no audio source uses val == 0 */
-        if ((in->source != val) && (val != 0)) {
-            in->source = val;
-            do_standby = true;
-        }
+    if (ret < 0)
+         goto error_params;
+
+    val = atoi(value);
+
+    /* no audio source uses val == 0 */
+    if ((in->source != val) && (val != 0)) {
+        in->source = val;
+        do_standby = true;
     }
 
     ret = str_parms_get_str(parms, AUDIO_PARAMETER_STREAM_ROUTING, value, sizeof(value));
-    if (ret >= 0) {
-        val = atoi(value) & ~AUDIO_DEVICE_BIT_IN;
-        if ((in->device != val) && (val != 0)) {
-            in->device = val;
-            do_standby = true;
-            /* make sure new device selection is incompatible with multi-mic pre processing
-             * configuration */
-            in_update_aux_channels(in, NULL);
-        }
+    if (ret < 0)
+        goto error_params;
+
+    val = atoi(value) & ~AUDIO_DEVICE_BIT_IN;
+    if ((in->device != val) && (val != 0)) {
+        in->device = val;
+        do_standby = true;
+        /* make sure new device selection is incompatible with multi-mic pre processing
+         * configuration */
+        in_update_aux_channels(in, NULL);
     }
 
     if (do_standby)
         do_input_standby(in);
+
     pthread_mutex_unlock(&in->lock);
     pthread_mutex_unlock(&adev->lock);
 
     str_parms_destroy(parms);
-    return ret;
+    return 0;
+
+error_params:
+    pthread_mutex_unlock(&in->lock);
+    pthread_mutex_unlock(&adev->lock);
+
+    str_parms_destroy(parms);
+
+    return -1;
 }
 
 static char * in_get_parameters(const struct audio_stream *stream,
@@ -3110,7 +3122,8 @@ static int adev_config_parse(struct m0_audio_device *adev)
     int len;
 
     property_get("ro.product.device", property, "tiny_hw");
-    snprintf(file, sizeof(file), "/system/etc/sound/%s", property);
+    //snprintf(file, sizeof(file), "/vendor/etc/sound/%s", property);
+    snprintf(file, sizeof(file), "/vendor/etc/sound/sc03e");
 
     ALOGV("Reading configuration from %s\n", file);
     f = fopen(file, "r");

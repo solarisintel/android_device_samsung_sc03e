@@ -18,7 +18,9 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
     samsung_ril.cpp \
-    samsung_atomic.cpp
+    samsung_atomic.cpp \
+    strdup16to8.cpp \
+    strdup8to16.cpp
 
 LOCAL_SHARED_LIBRARIES := libbinder
 
@@ -27,3 +29,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 
 include $(BUILD_SHARED_LIBRARY)
+
+
+

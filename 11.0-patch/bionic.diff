@@ -1,0 +1,30 @@
+diff --git bionic/libc/bionic/pthread_internal.cpp bionic/libc/bionic/pthread_internal.cpp
+@@ -110,7 +110,8 @@ pthread_internal_t* __pthread_internal_find(pthread_t thread_id, const char* cal
+       // TODO: try getting rid of this when Treble lets us keep vendor blobs on an old API level.
+       async_safe_format_log(ANDROID_LOG_WARN, "libc", "invalid pthread_t (0) passed to %s", caller);
+     } else {
+-      async_safe_fatal("invalid pthread_t %p passed to %s", thread, caller);
++        async_safe_format_log(ANDROID_LOG_WARN, "libc", "invalid pthread_t (0) passed to %s", caller);
++//      async_safe_fatal("invalid pthread_t %p passed to %s", thread, caller);
+     }
+   }
+   return nullptr;
+diff --git bionic/linker/linker.cpp bionic/linker/linker.cpp
+@@ -3329,6 +3329,17 @@ bool soinfo::link_image(const SymbolLookupList& lookup_list, soinfo* local_group
+   if (has_text_relocations) {
+     // Fail if app is targeting M or above.
+     int app_target_api_level = get_application_target_sdk_version();
++#ifdef SDK_VERSION_OVERRIDES
++    for (const auto& entry : android::base::Split(SDK_VERSION_OVERRIDES, " ")) {
++      auto splitted = android::base::Split(entry, "=");
++      if (splitted.size() == 2 && splitted[0] == get_realpath()) {
++        app_target_api_level = static_cast<uint32_t>(std::stoul(splitted[1]));
++        DEBUG("\"%s\" has text relocations. Overriding sdk version %d to %d", get_realpath(), get_application_target_sdk_version(), app_target_api_level);
++        break;
++      }
++    }
++#endif
++
+     if (app_target_api_level >= 23) {
+       DL_ERR_AND_LOG("\"%s\" has text relocations (https://android.googlesource.com/platform/"
+                      "bionic/+/master/android-changes-for-ndk-developers.md#Text-Relocations-"
