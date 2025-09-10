@@ -117,3 +117,10 @@ PRODUCT_PACKAGES += \
 # RIL (smdk4412-common)
 PRODUCT_PACKAGES += \
     libsecril-shim
+
+# RIL (smdk4412-common)
+PRODUCT_PACKAGES += \
+    libsecril-shim
+
+PRODUCT_PACKAGES += \
+    SamsungDoze
