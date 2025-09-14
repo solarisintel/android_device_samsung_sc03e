@@ -114,5 +114,13 @@ $(call inherit-product, vendor/samsung/sc03e/sc03e-vendor.mk)
 PRODUCT_PACKAGES += \
     libshim_ril
 
+# RIL (smdk4412-common)
+PRODUCT_PACKAGES += \
+    libsecril-shim
+
+# RIL (smdk4412-common)
+PRODUCT_PACKAGES += \
+    libsecril-shim
+
 PRODUCT_PACKAGES += \
     SamsungDoze
