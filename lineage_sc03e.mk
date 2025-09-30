@@ -38,3 +38,4 @@ BUILD_FINGERPRINT := samsung/SC-03E/SC-03E:4.1.1/JRO03C/SC03EOMAMB1:user/release
 # bootanimation 
 PRODUCT_PACKAGES += \
     bootanimation.zip
+

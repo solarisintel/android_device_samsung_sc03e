@@ -1,0 +1,94 @@
+diff --git ./frameworks/base/core/java/android/os/UserManager.java ./frameworks/base/core/java/android/os/UserManager.java.new
+index 45842926ff1..a0f9bc67860 100644
+--- ./frameworks/base/core/java/android/os/UserManager.java
++++ ./frameworks/base/core/java/android/os/UserManager.java.new
+@@ -2977,13 +2977,7 @@ public class UserManager {
+     public static int getMaxSupportedUsers() {
+         // Don't allow multiple users on certain builds
+         if (android.os.Build.ID.startsWith("JVP")) return 1;
+-        if (ActivityManager.isLowRamDeviceStatic()) {
+-            // Low-ram devices are Svelte. Most of the time they don't get multi-user.
+-            if ((Resources.getSystem().getConfiguration().uiMode & Configuration.UI_MODE_TYPE_MASK)
+-                    != Configuration.UI_MODE_TYPE_TELEVISION) {
+-                return 1;
+-            }
+-        }
++
+         return SystemProperties.getInt("fw.max_users",
+                 Resources.getSystem().getInteger(R.integer.config_multiuserMaximumUsers));
+     }
+diff --git ./frameworks/base/services/core/java/com/android/server/display/ColorFade.java ./frameworks/base/services/core/java/com/android/server/display/ColorFade.java.new
+index c46fc20b3cc..05aae7a3087 100644
+--- ./frameworks/base/services/core/java/com/android/server/display/ColorFade.java
++++ ./frameworks/base/services/core/java/com/android/server/display/ColorFade.java.new
+@@ -28,6 +28,7 @@ import android.opengl.EGLSurface;
+ import android.opengl.GLES11Ext;
+ import android.opengl.GLES20;
+ import android.os.IBinder;
++import android.os.SystemProperties;
+ import android.util.Slog;
+ import android.view.Display;
+ import android.view.DisplayInfo;
+@@ -75,6 +76,8 @@ final class ColorFade {
+ 
+     private static final int EGL_GL_COLORSPACE_KHR = 0x309D;
+     private static final int EGL_GL_COLORSPACE_DISPLAY_P3_PASSTHROUGH_EXT = 0x3490;
++    private static final boolean DESTROY_SURFACE_AFTER_DETACH =
++            SystemProperties.getBoolean("ro.egl.destroy_after_detach", false);
+ 
+     private final int mDisplayId;
+ 
+@@ -336,10 +339,15 @@ final class ColorFade {
+                 destroyScreenshotTexture();
+                 destroyGLShaders();
+                 destroyGLBuffers();
+-                destroyEglSurface();
++                if (!DESTROY_SURFACE_AFTER_DETACH) {
++                    destroyEglSurface();
++                }
+             } finally {
+                 detachEglContext();
+             }
++            if (DESTROY_SURFACE_AFTER_DETACH) {
++                destroyEglSurface();
++            }
+             // This is being called with no active context so shouldn't be
+             // needed but is safer to not change for now.
+             GLES20.glFlush();
+diff --git ./frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java ./frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java.new
+index 9aed9109e24..0a559169f35 100644
+--- ./frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java
++++ ./frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java.new
+@@ -4160,6 +4160,8 @@ public class PackageManagerService extends IPackageManager.Stub
+             PackageInfo packageInfo = PackageParser.generatePackageInfo(p, gids, flags,
+                     ps.firstInstallTime, ps.lastUpdateTime, permissions, state, userId);
+ 
++            packageInfo = mayFakeSignature(p, packageInfo, permissions);
++
+             if (packageInfo == null) {
+                 return null;
+             }
+@@ -4194,6 +4196,23 @@ public class PackageManagerService extends IPackageManager.Stub
+         }
+     }
+ 
++    private PackageInfo mayFakeSignature(PackageParser.Package p, PackageInfo pi,
++            Set<String> permissions) {
++        try {
++            if (permissions.contains("android.permission.FAKE_PACKAGE_SIGNATURE")
++                    && p.applicationInfo.targetSdkVersion > Build.VERSION_CODES.LOLLIPOP_MR1
++                    && p.mAppMetaData != null) {
++                String sig = p.mAppMetaData.getString("fake-signature");
++                if (sig != null) {
++                    pi.signatures = new Signature[] {new Signature(sig)};
++                }
++            }
++        } catch (Throwable t) {
++            // We should never die because of any failures, this is system code!
++            Log.w("PackageManagerService.FAKE_PACKAGE_SIGNATURE", t);
++        }
++        return pi;
++    }
+     @Override
+     public void checkPackageStartable(String packageName, int userId) {
+         final int callingUid = Binder.getCallingUid();

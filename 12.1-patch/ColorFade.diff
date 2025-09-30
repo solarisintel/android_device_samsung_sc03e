@@ -1,0 +1,35 @@
+--- frameworks/base/services/core/java/com/android/server/display/ColorFade.java.orig	2025-09-17 19:07:08.065209157 +0900
++++ frameworks/base/services/core/java/com/android/server/display/ColorFade.java	2025-09-17 19:08:24.845187631 +0900
+@@ -32,6 +32,7 @@
+ import android.opengl.GLES11Ext;
+ import android.opengl.GLES20;
+ import android.os.IBinder;
++import android.os.SystemProperties;
+ import android.util.Slog;
+ import android.view.Display;
+ import android.view.DisplayInfo;
+@@ -78,6 +79,8 @@
+ 
+     private static final int EGL_GL_COLORSPACE_KHR = 0x309D;
+     private static final int EGL_GL_COLORSPACE_DISPLAY_P3_PASSTHROUGH_EXT = 0x3490;
++    private static final boolean DESTROY_SURFACE_AFTER_DETACH =
++            SystemProperties.getBoolean("ro.egl.destroy_after_detach", false);
+     private static final int EGL_PROTECTED_CONTENT_EXT = 0x32C0;
+ 
+     private final int mDisplayId;
+@@ -374,9 +377,15 @@
+                 destroyGLShaders();
+                 destroyGLBuffers();
+                 destroyEglSurface();
++                if (!DESTROY_SURFACE_AFTER_DETACH) {
++                    destroyEglSurface();
++                }
+             } finally {
+                 detachEglContext();
+             }
++            if (DESTROY_SURFACE_AFTER_DETACH) {
++                destroyEglSurface();
++            }
+             // This is being called with no active context so shouldn't be
+             // needed but is safer to not change for now.
+             GLES20.glFlush();

@@ -3121,7 +3121,7 @@ static int adev_config_parse(struct m0_audio_device *adev)
     bool eof = false;
     int len;
 
-    property_get("ro.product.device", property, "tiny_hw");
+    property_get(PRODUCT_DEVICE_PROPERTY, property, "tiny_hw");
     //snprintf(file, sizeof(file), "/vendor/etc/sound/%s", property);
     snprintf(file, sizeof(file), "/vendor/etc/sound/sc03e");
 

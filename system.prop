@@ -4,11 +4,11 @@
 
 config.disable_atlas=true
 dalvik.vm.dexopt-data-only=1
-dalvik.vm.dex2oat-Xmx=256m
-rild.libpath=/vendor/lib/libsecril-shim.so
-rild.libargs=-d /dev/ttyS0
+# dalvik.vm.dex2oat-Xmx=256m
+vendor.rild.libpath=/vendor/lib/libsecril-shim.so
+vendor.rild.libargs=-d /dev/ttyS0
 ro.ril.telephony.mqanelements=5
-ro.sf.lcd_density=320
+ro.sf.lcd_density=280
 ro.lcd_min_brightness=20
 ro.ril.telephony.nstrings=4
 
@@ -25,7 +25,7 @@ ro.sys.fw.use_trim_settings=true
 ro.sys.fw.empty_app_percent=25
 ro.sys.fw.trim_empty_percent=50
 ro.sys.fw.trim_cache_percent=50
-ro.sys.fw.bg_apps_limit=32
+# ro.sys.fw.bg_apps_limit=32
 ro.sys.fw.bservice_limit=7
 ro.sys.fw.bservice_age=6000
 ro.sys.fw.bservice_enable=true
@@ -54,13 +54,13 @@ persist.sys.force_highendgfx=true
 ro.sys.fw.bg_apps_limit=16
 
 # Set max background services
-ro.config.max_starting_bg=4
+ro.config.max_starting_bg=1
 
-# GPS
-ro.ril.def.agps.mode=1
+# GPS(i9300)
+# ro.ril.def.agps.mode=1
 
 # Wifi
-wifi.supplicant_scan_interval=240
+# wifi.supplicant_scan_interval=240
 
 # Debugging
 persist.logd.size=16777216

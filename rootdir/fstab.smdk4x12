@@ -23,8 +23,11 @@
 # zram
 /dev/block/zram0			none				swap		defaults		zramsize=419430400
 
+# 
 # when firmware mounted, shutodwn is not possible
 /dev/block/platform/dw_mmc/by-name/RADIO         /firmware         vfat      ro,shortname=lower,fmask=0133,dmask=0022                                           wait
 
 /dev/block/platform/dw_mmc/by-name/TOMBSTONES    /tombstones       ext4      noatime,nosuid,nodev,journal_async_commit,errors=panic                             wait,check
+
+
 

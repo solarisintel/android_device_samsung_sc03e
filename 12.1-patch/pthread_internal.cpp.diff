@@ -1,0 +1,28 @@
+--- bionic/libc/bionic/pthread_internal.cpp.orig	2025-09-17 19:20:52.378475074 +0900
++++ bionic/libc/bionic/pthread_internal.cpp	2025-09-17 19:20:55.301443010 +0900
+@@ -88,7 +88,7 @@
+   return thread ? thread->tid : -1;
+ }
+ 
+-pthread_internal_t* __pthread_internal_find(pthread_t thread_id,  const char* caller) {
++pthread_internal_t* __pthread_internal_find(pthread_t thread_id, [[maybe_unused]] const char* caller) {
+   pthread_internal_t* thread = reinterpret_cast<pthread_internal_t*>(thread_id);
+ 
+   // Check if we're looking for ourselves before acquiring the lock.
+@@ -102,7 +102,7 @@
+       if (t == thread) return thread;
+     }
+   }
+-
++#if 0 
+   // Historically we'd return null, but from API level 26 we catch this error.
+   if (android_get_application_target_sdk_version() >= 26) {
+     if (thread == nullptr) {
+@@ -117,6 +117,7 @@
+ //      async_safe_fatal("invalid pthread_t %p passed to %s", thread, caller);
+     }
+   }
++#endif
+   return nullptr;
+ }
+ 

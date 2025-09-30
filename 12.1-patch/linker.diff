@@ -1,6 +1,6 @@
---- /home/poid/opt-cm-18.1/bionic/linker/linker.cpp.orig	2025-08-21 22:05:08.214953672 +0900
-+++ /home/poid/opt-cm-18.1/bionic/linker/linker.cpp	2025-08-21 22:08:03.936012615 +0900
-@@ -3327,32 +3327,6 @@
+--- bionic/linker/linker.cpp.orig	2025-09-17 18:53:43.035780245 +0900
++++ bionic/linker/linker.cpp	2025-09-17 18:56:04.148846915 +0900
+@@ -3324,31 +3324,6 @@
  
  #if !defined(__LP64__)
    if (has_text_relocations) {
@@ -18,9 +18,8 @@
 -#endif
 -
 -    if (app_target_api_level >= 23) {
--      DL_ERR_AND_LOG("\"%s\" has text relocations (https://android.googlesource.com/platform/"
--                     "bionic/+/master/android-changes-for-ndk-developers.md#Text-Relocations-"
--                     "Enforced-for-API-level-23)", get_realpath());
+-      DL_ERR_AND_LOG("\"%s\" has text relocations (%s#Text-Relocations-Enforced-for-API-level-23)",
+-                     get_realpath(), kBionicChangesUrl);
 -      return false;
 -    }
 -    // Make segments writable to allow text relocations to work properly. We will later call

@@ -27,6 +27,7 @@ TARGET_LD_SHIM_LIBS := \
 
 # Graphics
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/sc03e/bluetooth
@@ -60,7 +61,7 @@ TARGET_SYSTEM_PROP += device/samsung/sc03e/system.prop
 BOARD_MODEM_TYPE := mdm9x35
 BOARD_MOBILEDATA_INTERFACE_NAME := "pdp0,gprs,ppp0,rmnet0,rmnet1"
 
-# Releasetools
+# Releasetools, change to config.fs
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/sc03e/releasetools
 
 # GPS
@@ -69,7 +70,4 @@ TARGET_NO_RPC := true
 # Radio
 TARGET_LD_SHIM_LIBS += \
    /system/vendor/lib/libsec-ril.so|libshim_ril.so
-
-
-
 

@@ -1,0 +1,1363 @@
+diff -u -r arch/arm/mach-exynos/include/mach/gpio-rev00-m3.h arch/arm/mach-exynos/include/mach/gpio-rev00-m3.h
+--- arch/arm/mach-exynos/include/mach/gpio-rev00-m3.h	2025-09-11 20:15:56.740908385 +0900
++++ arch/arm/mach-exynos/include/mach/gpio-rev00-m3.h	2025-09-16 19:47:08.550443657 +0900
+@@ -13,13 +13,8 @@
+ #define GPIO_BT_CTS			EXYNOS4_GPA0(2)
+ #define GPIO_BT_RTS			EXYNOS4_GPA0(3)
+ 
+-#if defined(CONFIG_MACH_M3_JPN_DCM)
+-#define GPIO_MSENSOR_SDA_18V		EXYNOS4_GPA0(6)
+-#define GPIO_MSENSOR_SCL_18V		EXYNOS4_GPA0(7)
+-#else
+ #define GPIO_NFC_SDA_18V		EXYNOS4_GPA0(6)
+ #define GPIO_NFC_SCL_18V		EXYNOS4_GPA0(7)
+-#endif
+ 
+ #define GPIO_AP_RXD_18V			EXYNOS4_GPA1(0)
+ #define GPIO_AP_TXD_18V			EXYNOS4_GPA1(1)
+@@ -122,7 +117,7 @@
+ 
+ #define GPIO_3_TOUCH_SCL		EXYNOS4_GPL0(1)
+ #define GPIO_3_TOUCH_SDA		EXYNOS4_GPL0(2)
+-#ifdef CONFIG_TARGET_LOCALE_EUR
++#if defined(CONFIG_TARGET_LOCALE_EUR) || defined(CONFIG_MACH_M3_JPN_DCM)
+ #define GPIO_VPS_SOUND_EN		EXYNOS4_GPL0(3)
+ #endif
+ #define GPIO_HDMI_EN			EXYNOS4_GPL0(4)
+@@ -133,21 +128,12 @@
+ #define GPIO_NFC_EN			EXYNOS4_GPL2(6)
+ #define GPIO_NFC_FIRMWARE		EXYNOS4_GPL2(7)
+ 
+-#if defined(CONFIG_MACH_M3_JPN_DCM)
+-#define GPIO_LED_VDD_EN		EXYNOS4212_GPM0(5)
+-#define GPIO_3_TOUCH_EN		GPIO_LED_VDD_EN
+-#define GPIO_ISP_STANDBY		EXYNOS4212_GPM0(6)
+-#define GPIO_CAM_IO_EN			EXYNOS4212_GPM0(7)
+-#define GPIO_ISP_CORE_EN		EXYNOS4212_GPM1(0)
+-#define GPIO_CAM_AF_EN			EXYNOS4212_GPM1(1)
+-#else
+ #define GPIO_LED_VDD_EN			EXYNOS4212_GPM0(0)
+ #define GPIO_3_TOUCH_EN			GPIO_LED_VDD_EN
+ #define GPIO_ISP_STANDBY		EXYNOS4212_GPM0(1)
+ #define GPIO_CAM_IO_EN			EXYNOS4212_GPM0(2)
+ #define GPIO_ISP_CORE_EN		EXYNOS4212_GPM0(3)
+ #define GPIO_CAM_AF_EN			EXYNOS4212_GPM0(4)
+-#endif
+ 
+ #define GPIO_HW_REV0			EXYNOS4212_GPM1(2)
+ #define GPIO_HW_REV1			EXYNOS4212_GPM1(3)
+@@ -188,11 +174,7 @@
+ #define GPIO_VOL_UP			EXYNOS4_GPX2(2)
+ #define GPIO_FUEL_ALERT			EXYNOS4_GPX2(3)
+ 
+-#if defined(CONFIG_MACH_M3_JPN_DCM)
+-#define GPIO_V_BUS_INT			EXYNOS4_GPX1(4)
+-#else
+ #define GPIO_V_BUS_INT			EXYNOS4_GPX2(4)
+-#endif
+ 
+ #define GPIO_WLAN_HOST_WAKE		EXYNOS4_GPX2(5)
+ #define GPIO_BT_HOST_WAKE		EXYNOS4_GPX2(6)
+@@ -212,13 +194,8 @@
+ #define GPIO_TF_EN			EXYNOS4_GPY2(0)
+ #define GPIO_AP2MDM_PMIC_RESET_N	EXYNOS4_GPY2(3)
+ 
+-#if defined(CONFIG_MACH_M3_JPN_DCM)
+-#define GPIO_NFC_SDA_18V		EXYNOS4_GPY2(4)
+-#define GPIO_NFC_SCL_18V		EXYNOS4_GPY2(5)
+-#else
+ #define GPIO_MSENSOR_SDA_18V		EXYNOS4_GPY2(4)
+ #define GPIO_MSENSOR_SCL_18V		EXYNOS4_GPY2(5)
+-#endif
+ 
+ #define	GPIO_MM_I2S_CLK			EXYNOS5_GPZ(0)
+ #define	GPIO_MM_I2S_SYNC		EXYNOS5_GPZ(2)
+@@ -240,9 +217,22 @@
+ #define MHL_INT_IRQ			gpio_to_irq(GPIO_MHL_INT)
+ #define MHL_WAKEUP_IRQ			gpio_to_irq(GPIO_MHL_WAKE_UP)
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++#define GPIO_MSENSOR_SDA_18V_R1	EXYNOS4_GPA0(6)
++#define GPIO_MSENSOR_SCL_18V_R1	EXYNOS4_GPA0(7)
++#define GPIO_3_TOUCH_EN_R1			EXYNOS4212_GPM0(5)
++#define GPIO_ISP_STANDBY_R1		EXYNOS4212_GPM0(6)
++#define GPIO_CAM_IO_EN_R1			EXYNOS4212_GPM0(7)
++#define GPIO_ISP_CORE_EN_R1		EXYNOS4212_GPM1(0)
++#define GPIO_CAM_AF_EN_R1			EXYNOS4212_GPM1(1)
++#define GPIO_V_BUS_INT_R1			EXYNOS4_GPX1(4)
++#define  FELICA_GPIO_I2C_SDA_R1	EXYNOS4_GPY2(4)
++#define  FELICA_GPIO_I2C_SCL_R1		EXYNOS4_GPY2(5)
++#endif
++
+ #if defined(CONFIG_FELICA)
+-#define  FELICA_GPIO_I2C_SDA   EXYNOS4_GPY2(4)
+-#define  FELICA_GPIO_I2C_SCL   EXYNOS4_GPY2(5)
++#define FELICA_GPIO_I2C_SDA	EXYNOS4_GPA0(6)
++#define FELICA_GPIO_I2C_SCL		EXYNOS4_GPA0(7)
+ #define  FELICA_UART3RX        EXYNOS4_GPA1(4)
+ #define  FELICA_GPIO_RFS       EXYNOS4_GPL2(6)
+ #define  FELICA_GPIO_PON       EXYNOS4_GPL2(7)
+diff -u -r arch/arm/mach-exynos/m3-gpio.c arch/arm/mach-exynos/m3-gpio.c
+--- arch/arm/mach-exynos/m3-gpio.c	2025-09-11 20:15:56.746908486 +0900
++++ arch/arm/mach-exynos/m3-gpio.c	2025-09-16 19:47:08.551443671 +0900
+@@ -86,9 +86,14 @@
+ 
+ 	{GPIO_V_BUS_INT,
+ 	 S3C_GPIO_INPUT, S3C_GPIO_SETPIN_NONE, S3C_GPIO_PULL_DOWN, S5P_GPIO_DRVSTR_LV1},
++
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	{GPIO_WPC_INT,
++	 S3C_GPIO_INPUT, S3C_GPIO_SETPIN_NONE, S3C_GPIO_PULL_DOWN, S5P_GPIO_DRVSTR_LV1},
++#else
+ 	{GPIO_WPC_INT,
+ 	 S3C_GPIO_INPUT, S3C_GPIO_SETPIN_NONE, S3C_GPIO_PULL_NONE, S5P_GPIO_DRVSTR_LV1},
+-
++#endif
+ 	{GPIO_CAM_MCLK,
+ 	 S3C_GPIO_INPUT, S3C_GPIO_SETPIN_NONE, S3C_GPIO_PULL_DOWN, S5P_GPIO_DRVSTR_LV3},
+ 	{GPIO_VTCAM_MCLK,
+@@ -248,7 +253,7 @@
+ 	{EXYNOS4_GPL0(0), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* NC */
+ 	{EXYNOS4_GPL0(1), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPL0(2), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPL0(3), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* NC */
++	{EXYNOS4_GPL0(3), S3C_GPIO_SLP_PREV, S3C_GPIO_PULL_NONE}, /* VPS_SOUND_EN */
+ 	{EXYNOS4_GPL0(4), S3C_GPIO_SLP_PREV,  S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPL0(6), S3C_GPIO_SLP_PREV,  S3C_GPIO_PULL_NONE},
+ 
+@@ -265,6 +270,9 @@
+ 	{EXYNOS4_GPL2(7), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	/* GPX1(0) VDDMIN (pda active) set to low at Sleep */
+ 	{EXYNOS4_GPX1(0),  S3C_GPIO_SLP_OUT0,  S3C_GPIO_PULL_DOWN},
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	{EXYNOS4_GPX3(0), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* NC */
++#endif
+ 	/* GPX3(2) T0 LTE HOST PORT PWR, hold previous level */
+ 	{EXYNOS4_GPX3(2),  S3C_GPIO_SLP_PREV,  S3C_GPIO_PULL_NONE},
+ #ifdef CONFIG_TARGET_LOCALE_EUR
+diff -u -r arch/arm/mach-exynos/mach-midas.c arch/arm/mach-exynos/mach-midas.c
+--- arch/arm/mach-exynos/mach-midas.c	2025-09-11 20:15:56.747908502 +0900
++++ arch/arm/mach-exynos/mach-midas.c	2025-09-16 19:47:08.553443698 +0900
+@@ -323,7 +323,17 @@
+ 	defined(CONFIG_MACH_M3) || \
+ 	defined(CONFIG_MACH_T0) || \
+ 	defined(CONFIG_MACH_BAFFIN)
+-	gpio_request(GPIO_3_TOUCH_EN, "gpio_3_touch_en");
++
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_request(GPIO_3_TOUCH_EN_R1, "gpio_3_touch_en");
++	else
++		gpio_request(GPIO_3_TOUCH_EN, "gpio_3_touch_en");
++#else
++ 	gpio_request(GPIO_3_TOUCH_EN, "gpio_3_touch_en");
++#endif
++
++
+ #if defined(CONFIG_MACH_C1_KOR_LGT)
+ 	gpio_request(GPIO_3_TOUCH_LDO_EN, "gpio_3_touch_ldo_en");
+ #endif
+@@ -409,10 +419,24 @@
+ static int touchkey_led_power_on(bool on)
+ {
+ #if defined(LED_LDO_WITH_EN_PIN)
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3) {
++		if (on)
++			gpio_direction_output(GPIO_3_TOUCH_EN_R1, 1);
++		else
++			gpio_direction_output(GPIO_3_TOUCH_EN_R1, 0);
++	} else {
++		if (on)
++			gpio_direction_output(GPIO_3_TOUCH_EN, 1);
++		else
++			gpio_direction_output(GPIO_3_TOUCH_EN, 0);
++	}
++#else
+ 	if (on)
+ 		gpio_direction_output(GPIO_3_TOUCH_EN, 1);
+ 	else
+ 		gpio_direction_output(GPIO_3_TOUCH_EN, 0);
++#endif
+ #else
+ 	struct regulator *regulator;
+ 
+@@ -2861,6 +2885,29 @@
+ #if defined(CONFIG_FELICA)
+ static void felica_setup(void)
+ {
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3) {
++		/* I2C SDA GPY2[4] */
++		gpio_request(FELICA_GPIO_I2C_SDA_R1, FELICA_GPIO_I2C_SDA_NAME);
++		s3c_gpio_setpull(FELICA_GPIO_I2C_SDA_R1, S3C_GPIO_PULL_DOWN);
++		gpio_free(FELICA_GPIO_I2C_SDA_R1);
++
++		/* I2C SCL GPY2[5] */
++		gpio_request(FELICA_GPIO_I2C_SCL_R1, FELICA_GPIO_I2C_SCL_NAME);
++		s3c_gpio_setpull(FELICA_GPIO_I2C_SCL_R1, S3C_GPIO_PULL_DOWN);
++		gpio_free(FELICA_GPIO_I2C_SCL_R1);
++	} else {
++		/* I2C SDA GPY2[4] */
++		gpio_request(FELICA_GPIO_I2C_SDA, FELICA_GPIO_I2C_SDA_NAME);
++		s3c_gpio_setpull(FELICA_GPIO_I2C_SDA, S3C_GPIO_PULL_DOWN);
++		gpio_free(FELICA_GPIO_I2C_SDA);
++
++		/* I2C SCL GPY2[5] */
++		gpio_request(FELICA_GPIO_I2C_SCL, FELICA_GPIO_I2C_SCL_NAME);
++		s3c_gpio_setpull(FELICA_GPIO_I2C_SCL, S3C_GPIO_PULL_DOWN);
++		gpio_free(FELICA_GPIO_I2C_SCL);
++	}
++#elif defined(CONFIG_MACH_T0_JPN_LTE_DCM)
+ 	/* I2C SDA GPY2[4] */
+ 	gpio_request(FELICA_GPIO_I2C_SDA, FELICA_GPIO_I2C_SDA_NAME);
+ 	s3c_gpio_setpull(FELICA_GPIO_I2C_SDA, S3C_GPIO_PULL_DOWN);
+@@ -2870,7 +2917,7 @@
+ 	gpio_request(FELICA_GPIO_I2C_SCL, FELICA_GPIO_I2C_SCL_NAME);
+ 	s3c_gpio_setpull(FELICA_GPIO_I2C_SCL, S3C_GPIO_PULL_DOWN);
+ 	gpio_free(FELICA_GPIO_I2C_SCL);
+-
++#endif
+ 	/* PON GPL2[7] */
+ 	gpio_request(FELICA_GPIO_PON, FELICA_GPIO_PON_NAME);
+ 	s3c_gpio_setpull(FELICA_GPIO_PON, S3C_GPIO_PULL_DOWN);
+@@ -2918,6 +2965,21 @@
+ 	  */
+ 	__raw_writel(0x0, S5P_CMU_RESET_ISP_SYS);
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3) {
++		i2c10_platdata.sda_pin = GPIO_MSENSOR_SDA_18V_R1;
++		i2c10_platdata.scl_pin = GPIO_MSENSOR_SCL_18V_R1;
++#ifdef CONFIG_BATTERY_WPC_CHARGER
++		max77693_charger_pdata.vbus_irq_gpio = GPIO_V_BUS_INT_R1;
++#endif
++#if defined(CONFIG_FELICA)
++		i2c30_gpio_platdata.sda_pin = FELICA_GPIO_I2C_SDA_R1;
++		i2c30_gpio_platdata.scl_pin = FELICA_GPIO_I2C_SCL_R1;
++#endif
++	}
++#endif
++
++
+ 	/* initialise the gpios */
+ 	midas_config_gpio_table();
+ 	exynos4_sleep_gpio_table_set = midas_config_sleep_gpio_table;
+@@ -2950,7 +3012,7 @@
+ #endif
+ 
+ #ifdef CONFIG_S3C_DEV_I2C4
+-#if defined(CONFIG_MACH_T0)
++#if defined(CONFIG_MACH_T0) || defined(CONFIG_MACH_M3_JPN_DCM)
+ 	s3c_i2c4_set_platdata(NULL);
+ #else
+ 	s3c_i2c4_set_platdata(NULL);
+@@ -3195,7 +3257,7 @@
+ 	platform_add_devices(midas_devices, ARRAY_SIZE(midas_devices));
+ 
+ #ifdef CONFIG_S3C_ADC
+-#if defined(CONFIG_MACH_GC1) || defined(CONFIG_MACH_T0)
++#if defined(CONFIG_MACH_GC1) || defined(CONFIG_MACH_T0) || defined(CONFIG_MACH_M3_JPN_DCM)
+ 	platform_device_register(&s3c_device_adc);
+ #else
+ 	if (system_rev != 3)
+@@ -3387,9 +3449,9 @@
+ 	/* 400 kHz for initialization of MMC Card  */
+ 	__raw_writel((__raw_readl(EXYNOS4_CLKDIV_FSYS3) & 0xfffffff0)
+ 		     | 0x9, EXYNOS4_CLKDIV_FSYS3);
+-#ifdef CONFIG_MACH_T0
+-	__raw_writel((__raw_readl(EXYNOS4_CLKDIV_FSYS2) & 0xfff0fff0)
+-		     | 0x90009, EXYNOS4_CLKDIV_FSYS2);
++#if defined(CONFIG_MACH_T0) || defined(CONFIG_MACH_M3_JPN_DCM)
++ 	__raw_writel((__raw_readl(EXYNOS4_CLKDIV_FSYS2) & 0xfff0fff0)
++ 		     | 0x90009, EXYNOS4_CLKDIV_FSYS2);
+ #else
+ 	__raw_writel((__raw_readl(EXYNOS4_CLKDIV_FSYS2) & 0xfff0fff0)
+ 		     | 0x80008, EXYNOS4_CLKDIV_FSYS2);
+diff -u -r arch/arm/mach-exynos/mdm_hsic_pm.c arch/arm/mach-exynos/mdm_hsic_pm.c
+--- arch/arm/mach-exynos/mdm_hsic_pm.c	2025-09-11 20:15:56.751908570 +0900
++++ arch/arm/mach-exynos/mdm_hsic_pm.c	2025-09-16 20:19:33.462683486 +0900
+@@ -119,13 +119,13 @@
+ 	int irq;
+ 
+ 	/* wakelock for L0 - L2 */
+-	struct wake_lock l2_wake;
++	struct wakeup_source l2_wake;
+ 
+ 	/* wakelock for boot */
+-	struct wake_lock boot_wake;
++	struct wakeup_source boot_wake;
+ 
+ 	/* wakelock for fast dormancy */
+-	struct wake_lock fd_wake;
++	struct wakeup_source fd_wake;
+ 	long fd_wake_time; /* wake time for raw packet in jiffies */
+ 
+ 	/* workqueue, work for delayed autosuspend */
+@@ -393,7 +393,7 @@
+ 	struct mdm_hsic_pm_data *pm_data = get_pm_data_by_dev_name(name);
+ 	pr_info("%s\n", __func__);
+ 	if (pm_data) {
+-		wake_lock(&pm_data->l2_wake);
++		__pm_stay_awake(&pm_data->l2_wake);
+ 		pm_data->scc = 0;
+ 		queue_delayed_work(pm_data->wq, &pm_data->rpm_state_check_work,
+ 							msecs_to_jiffies(3000));
+@@ -405,7 +405,7 @@
+ 	struct mdm_hsic_pm_data *pm_data = get_pm_data_by_dev_name(name);
+ 	pr_info("%s\n", __func__);
+ 	if (pm_data) {
+-		wake_unlock(&pm_data->l2_wake);
++		__pm_relax(&pm_data->l2_wake);
+ 		cancel_delayed_work(&pm_data->rpm_state_check_work);
+ 	}
+ }
+@@ -415,7 +415,7 @@
+ 	struct mdm_hsic_pm_data *pm_data = get_pm_data_by_dev_name(name);
+ 	pr_info("%s\n", __func__);
+ 	if (pm_data)
+-		wake_lock(&pm_data->boot_wake);
++		__pm_stay_awake(&pm_data->boot_wake);
+ }
+ 
+ void request_boot_lock_release(const char *name)
+@@ -423,7 +423,7 @@
+ 	struct mdm_hsic_pm_data *pm_data = get_pm_data_by_dev_name(name);
+ 	pr_info("%s\n", __func__);
+ 	if (pm_data)
+-		wake_unlock(&pm_data->boot_wake);
++		__pm_relax(&pm_data->boot_wake);
+ }
+ 
+ bool check_request_blocked(const char *name)
+@@ -822,7 +822,7 @@
+ 	if (!pm_data || !pm_data->fd_wake_time)
+ 		return;
+ 
+-	wake_lock_timeout(&pm_data->fd_wake, pm_data->fd_wake_time);
++	__pm_wakeup_event(&pm_data->fd_wake, pm_data->fd_wake_time / HZ * 1000);
+ };
+ 
+ void fast_dormancy_wakelock(const char *name)
+@@ -985,7 +985,7 @@
+ 		pr_info("%s: request blocked by kernel suspending\n", __func__);
+ 		pm_data->state_busy = true;
+ 		/* for blocked request, set wakelock to return at dpm suspend */
+-		wake_lock(&pm_data->l2_wake);
++		__pm_stay_awake(&pm_data->l2_wake);
+ 		return IRQ_HANDLED;
+ 	}
+ #if 0
+@@ -1329,9 +1329,9 @@
+ 	register_cpu_notifier(&pm_data->cpu_hotplug_notifier);
+ #endif
+ 
+-	wake_lock_init(&pm_data->l2_wake, WAKE_LOCK_SUSPEND, pm_data->name);
+-	wake_lock_init(&pm_data->boot_wake, WAKE_LOCK_SUSPEND, "mdm_boot");
+-	wake_lock_init(&pm_data->fd_wake, WAKE_LOCK_SUSPEND, "fast_dormancy");
++	wakeup_source_init(&pm_data->l2_wake, pm_data->name);
++	wakeup_source_init(&pm_data->boot_wake, "mdm_boot");
++	wakeup_source_init(&pm_data->fd_wake, "fast_dormancy");
+ 	pm_data->fd_wake_time = DEFAULT_RAW_WAKE_TIME;
+ 	pm_data->qmicm_mode = false;
+ 
+diff -u -r arch/arm/mach-exynos/midas-camera.c arch/arm/mach-exynos/midas-camera.c
+--- arch/arm/mach-exynos/midas-camera.c	2025-09-11 20:15:56.751908570 +0900
++++ arch/arm/mach-exynos/midas-camera.c	2025-09-16 19:47:08.555443726 +0900
+@@ -344,7 +344,14 @@
+ 	int ret = 0;
+ 
+ 	/* SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_CAM_IO_EN_R1, "GPM0");
++	else
++		ret = gpio_request(GPIO_CAM_IO_EN, "GPM0");
++#else
+ 	ret = gpio_request(GPIO_CAM_IO_EN, "GPM0");
++#endif
+ 	if (ret) {
+ 		printk(KERN_ERR "fail to request gpio(GPIO_CAM_IO_EN)\n");
+ 		return ret;
+@@ -387,7 +394,14 @@
+ 	s5k6a3_gpio_request();
+ 
+ 	/* CAM_SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_IO_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_CAM_IO_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_CAM_IO_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_IO_EN");
+ 	/* delay is needed : external LDO control is slower than MCLK control*/
+ 	udelay(100);
+@@ -427,7 +441,14 @@
+ 	regulator_put(regulator);
+ 	CAM_CHECK_ERR_RET(ret, "enable vt_cam_1.8v");
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_CAM_IO_EN_R1);
++	else
++		gpio_free(GPIO_CAM_IO_EN);
++#else
+ 	gpio_free(GPIO_CAM_IO_EN);
++#endif
+ 	gpio_free(GPIO_CAM_VT_nRST);
+ 
+ #if defined(CONFIG_MACH_T0) || defined(CONFIG_MACH_M3) || \
+@@ -466,7 +487,14 @@
+ 	CAM_CHECK_ERR(ret, "disable vt_cam_1.8v");
+ 
+ 	/* CAM_SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_IO_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_CAM_IO_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_CAM_IO_EN, 0);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_IO_EN");
+ 	/* delay is needed : external LDO control is slower than MCLK control*/
+ 	udelay(500);
+@@ -488,7 +516,14 @@
+ #endif
+ 	CAM_CHECK_ERR(ret, "cfg mclk");
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_CAM_IO_EN_R1);
++	else
++		gpio_free(GPIO_CAM_IO_EN);
++#else
+ 	gpio_free(GPIO_CAM_IO_EN);
++#endif
+ 	gpio_free(GPIO_CAM_VT_nRST);
+ 
+ #if defined(CONFIG_MACH_T0) || defined(CONFIG_MACH_M3) || \
+@@ -701,7 +736,14 @@
+ {
+ 	int ret = 0;
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_STANDBY_R1, "GPM0");
++	else
++		ret = gpio_request(GPIO_ISP_STANDBY, "GPM0");
++#else
+ 	ret = gpio_request(GPIO_ISP_STANDBY, "GPM0");
++#endif
+ 	if (ret) {
+ 		printk(KERN_ERR "faile to request gpio(GPIO_ISP_STANDBY)\n");
+ 		return ret;
+@@ -714,13 +756,24 @@
+ 	}
+ 
+ 	/* SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_CAM_IO_EN_R1, "GPM0");
++	else
++		ret = gpio_request(GPIO_CAM_IO_EN, "GPM0");
++#else
+ 	ret = gpio_request(GPIO_CAM_IO_EN, "GPM0");
++#endif
+ 	if (ret) {
+ 		printk(KERN_ERR "fail to request gpio(GPIO_CAM_IO_EN)\n");
+ 		return ret;
+ 	}
++
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_CAM_AF_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_CAM_AF_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_CAM_AF_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_CAM_AF_EN, "GPM0");
+ #endif
+@@ -730,7 +783,10 @@
+ 	}
+ 
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -755,11 +811,27 @@
+ 
+ static void s5c73m3_gpio_free(void)
+ {
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3) {
++		gpio_free(GPIO_ISP_STANDBY_R1);
++		gpio_free(GPIO_CAM_IO_EN_R1);
++		gpio_free(GPIO_ISP_RESET);
++		gpio_free(GPIO_CAM_AF_EN_R1);
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	} else {
++		gpio_free(GPIO_ISP_STANDBY);
++		gpio_free(GPIO_ISP_RESET);
++		gpio_free(GPIO_CAM_IO_EN);
++		gpio_free(GPIO_CAM_AF_EN);
++		gpio_free(GPIO_ISP_CORE_EN);
++	}
++#else
+ 	gpio_free(GPIO_ISP_STANDBY);
+ 	gpio_free(GPIO_ISP_RESET);
+ 	gpio_free(GPIO_CAM_IO_EN);
+ 	gpio_free(GPIO_CAM_AF_EN);
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 
+ #if defined(CONFIG_MACH_C1) || defined(CONFIG_MACH_T0) || \
+ 	defined(CONFIG_MACH_SLP_T0_LTE) || defined(CONFIG_MACH_BAFFIN)
+@@ -783,7 +855,14 @@
+ 	s5c73m3_gpio_request();
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_CORE_EN");
+ 
+ 	regulator = regulator_get(NULL, "cam_isp_core_1.2v");
+@@ -795,7 +874,14 @@
+ 	CAM_CHECK_ERR_RET(ret, "enable cam_isp_core_1.2v");
+ 
+ 	/* CAM_SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_IO_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_CAM_IO_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_CAM_IO_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output IO_EN");
+ 
+ 	/* CAM_SENSOR_CORE_1.2V */
+@@ -839,7 +925,14 @@
+ #endif
+ 
+ 	/* CAM_AF_2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_AF_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_CAM_AF_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_CAM_AF_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_AF_EN");
+ 	udelay(2000);
+ 
+@@ -862,7 +955,14 @@
+ 	mdelay(5);
+ 
+ 	/* ISP_STANDBY */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_STANDBY_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_ISP_STANDBY, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_STANDBY, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_STANDBY");
+ 	udelay(100);		/* 2000 cycle */
+ 
+@@ -886,7 +986,14 @@
+ 	s5c73m3_gpio_request();
+ 
+ 	/* ISP_STANDBY */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_STANDBY_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_ISP_STANDBY, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_STANDBY, 0);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_STANDBY");
+ 	udelay(2);		/* 40 cycle */
+ 
+@@ -895,7 +1002,14 @@
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_RESET");
+ 
+ 	/* CAM_AF_2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_AF_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_CAM_AF_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_CAM_AF_EN, 0);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_AF_EN");
+ 
+ 	/* CAM_ISP_MIPI_1.2V */
+@@ -948,7 +1062,14 @@
+ #endif
+ 
+ 	/* CAM_SENSOR_A2.8V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_CAM_IO_EN_R1, 0);
++	else
+ 	ret = gpio_direction_output(GPIO_CAM_IO_EN, 0);
++#else
++		ret = gpio_direction_output(GPIO_CAM_IO_EN, 0);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_IO_EN");
+ 
+ 	/* CAM_ISP_CORE_1.2V */
+@@ -960,7 +1081,14 @@
+ 	regulator_put(regulator);
+ 	CAM_CHECK_ERR(ret, "disable cam_isp_core_1.2v");
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_CAM_ISP_CORE_EN");
+ 	/* delay is needed : hw request*/
+ 	mdelay(30);
+@@ -1083,8 +1211,12 @@
+ 		printk(KERN_ERR "faile to request gpio(GPIO_CAM_VGA_nRST)\n");
+ 		return ret;
+ 	}
++
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -1107,7 +1239,14 @@
+ 	udelay(10);
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 1);
++	else
++	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_CORE_EN");
+ 
+ 	regulator = regulator_get(NULL, "cam_isp_core_1.2v");
+@@ -1202,7 +1341,14 @@
+ 
+ 	gpio_free(GPIO_CAM_VT_nSTBY);
+ 	gpio_free(GPIO_CAM_VT_nRST);
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++	gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+@@ -1226,7 +1372,10 @@
+ 		return ret;
+ 	}
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -1325,7 +1474,14 @@
+ 	udelay(5);
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#endif
+ 	CAM_CHECK_ERR(ret, "output ISP_CORE");
+ 
+ 	regulator = regulator_get(NULL, "cam_isp_core_1.2v");
+@@ -1338,7 +1494,14 @@
+ 
+ 	gpio_free(GPIO_CAM_VT_nSTBY);
+ 	gpio_free(GPIO_CAM_VT_nRST);
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++		gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+@@ -1447,7 +1610,10 @@
+ 	printk(KERN_DEBUG "%s: in\n", __func__);
+ 
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -1462,7 +1628,14 @@
+ 		return ret;
+ 	}
+ 	/* CAM_ISP_CORE_EN */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_CORE_EN");
+ 
+ 	/* CAM_ISP_1.2V (ISP 1.2V) => BUCK 9*/
+@@ -1524,7 +1697,14 @@
+ 	CAM_CHECK_ERR_RET(ret, "output reset");
+ 	mdelay(4);
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++		gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+@@ -1549,8 +1729,12 @@
+ 			return ret;
+ 		}
+ 	}
++
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -1644,7 +1828,14 @@
+ 	CAM_CHECK_ERR(ret, "disable, cam_isp_1.2v");
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#endif
+ 	CAM_CHECK_ERR(ret, "output ISP_CORE");
+ 
+ 	if (system_rev > 0) {
+@@ -1660,7 +1851,14 @@
+ 		gpio_free(GPIO_SAMBAZ_RESET);
+ 	}
+ 
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++		gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+@@ -3409,7 +3607,10 @@
+ 		return ret;
+ 	}
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -3436,7 +3637,14 @@
+ 	CAM_CHECK_ERR(ret, "output reset");
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 1);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 1);
++#endif
+ 	CAM_CHECK_ERR_RET(ret, "output GPIO_ISP_CORE_EN");
+ 
+ 	regulator = regulator_get(NULL, "cam_isp_core_1.2v");
+@@ -3507,7 +3715,14 @@
+ 
+ 	gpio_free(GPIO_CAM_VT_nSTBY);
+ 	gpio_free(GPIO_CAM_VT_nRST);
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++		gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+@@ -3531,7 +3746,10 @@
+ 		return ret;
+ 	}
+ #if defined(CONFIG_MACH_M3_JPN_DCM)
+-	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM1");
++	if (system_rev < 3)
++		ret = gpio_request(GPIO_ISP_CORE_EN_R1, "GPM1");
++	else
++		ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #else
+ 	ret = gpio_request(GPIO_ISP_CORE_EN, "GPM0");
+ #endif
+@@ -3575,7 +3793,14 @@
+ 	udelay(5);
+ 
+ 	/* CAM_ISP_CORE_1.2V */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN_R1, 0);
++	else
++		ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#else
+ 	ret = gpio_direction_output(GPIO_ISP_CORE_EN, 0);
++#endif
+ 	CAM_CHECK_ERR(ret, "output ISP_CORE");
+ 
+ 	regulator = regulator_get(NULL, "cam_isp_core_1.2v");
+@@ -3618,7 +3843,14 @@
+ 
+ 	gpio_free(GPIO_CAM_VT_nSTBY);
+ 	gpio_free(GPIO_CAM_VT_nRST);
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	if (system_rev < 3)
++		gpio_free(GPIO_ISP_CORE_EN_R1);
++	else
++		gpio_free(GPIO_ISP_CORE_EN);
++#else
+ 	gpio_free(GPIO_ISP_CORE_EN);
++#endif
+ 	gpio_free(GPIO_ISP_RESET);
+ 
+ 	return ret;
+diff -u -r arch/arm/mach-exynos/midas-gpio.c arch/arm/mach-exynos/midas-gpio.c
+--- arch/arm/mach-exynos/midas-gpio.c	2025-09-11 20:15:56.751908570 +0900
++++ arch/arm/mach-exynos/midas-gpio.c	2025-09-16 19:47:08.556443740 +0900
+@@ -103,10 +103,10 @@
+ 	{EXYNOS4_GPA0(1),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA0(2),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(3),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+-	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+-	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
++	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+ 	{EXYNOS4_GPA0(6),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 
+ 	{EXYNOS4_GPA1(0),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA1(1),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+@@ -772,10 +772,10 @@
+ 	{EXYNOS4_GPA0(1),  S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(2),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(3),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+-	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+-	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
++	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+ 	{EXYNOS4_GPA0(6),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 
+ 	{EXYNOS4_GPA1(0),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA1(1),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+@@ -1201,10 +1201,10 @@
+ 	{EXYNOS4_GPA0(1),  S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(2),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(3),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+-	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+-	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
++	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+ 	{EXYNOS4_GPA0(6),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 
+ 	{EXYNOS4_GPA1(0),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA1(1),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+@@ -1565,10 +1565,10 @@
+ 	{EXYNOS4_GPA0(1),  S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE}, /* BT_UART_TXD */
+ 	{EXYNOS4_GPA0(2),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE}, /* BT_UART_CTS */
+ 	{EXYNOS4_GPA0(3),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP}, /* BT_UART_RTS */
+-	{EXYNOS4_GPA0(4),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE}, /* GPS_UART_RXD */
+-	{EXYNOS4_GPA0(5),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* GPS_UART_TXD */
+-	{EXYNOS4_GPA0(6),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* GPS_UART_CTS */
+-	{EXYNOS4_GPA0(7),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP}, /* GPS_UART_RTS */
++	{EXYNOS4_GPA0(4), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP}, /*GPS_RXD*/
++	{EXYNOS4_GPA0(5), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP}, /*GPS_TXD*/
++	{EXYNOS4_GPA0(6), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /*GPS_CTS*/
++	{EXYNOS4_GPA0(7), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /*GPS_RTS*/
+ 
+ 	{EXYNOS4_GPA1(0),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* AP_RXD */
+ 	{EXYNOS4_GPA1(1),  S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN}, /* AP_TXD */
+@@ -2021,8 +2021,8 @@
+ 	{EXYNOS4_GPA0(1), S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(2), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(3), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+-	{EXYNOS4_GPA0(4), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPA0(5), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
++	{EXYNOS4_GPA0(4), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(5), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+ 	{EXYNOS4_GPA0(6), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA0(7), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 
+@@ -2337,8 +2337,8 @@
+ 	{EXYNOS4_GPA0(1), S3C_GPIO_SLP_OUT0, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(2), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_NONE},
+ 	{EXYNOS4_GPA0(3), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+-	{EXYNOS4_GPA0(4), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+-	{EXYNOS4_GPA0(5), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
++	{EXYNOS4_GPA0(4), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
++	{EXYNOS4_GPA0(5), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_UP},
+ 	{EXYNOS4_GPA0(6), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 	{EXYNOS4_GPA0(7), S3C_GPIO_SLP_INPUT, S3C_GPIO_PULL_DOWN},
+ 
+diff -u -r arch/arm/mach-exynos/midas-lcd.c arch/arm/mach-exynos/midas-lcd.c
+--- arch/arm/mach-exynos/midas-lcd.c	2025-09-11 20:15:56.752908587 +0900
++++ arch/arm/mach-exynos/midas-lcd.c	2025-09-16 19:47:08.557443754 +0900
+@@ -487,8 +487,12 @@
+ 
+ 	.freq = 60,
+ #if defined(CONFIG_S6E8AA0_AMS480GYXX)
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	.freq_limit = 43,
++#else
+ 	.freq_limit = 40,
+ #endif
++#endif
+ 
+ 	/* minumun value is 0 except for wr_act time. */
+ 	.cpu_timing = {
+@@ -499,9 +503,21 @@
+ 	},
+ 
+ 	.timing = {
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.h_fp = 15,
++#else
+ 		.h_fp = 5,
++#endif
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.h_bp = 10,
++#else
+ 		.h_bp = 5,
++#endif
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.h_sw = 10,
++#else
+ 		.h_sw = 5,
++#endif
+ 		.v_fp = 13,
+ 		.v_fpe = 1,
+ 		.v_bp = 1,
+@@ -529,7 +545,11 @@
+ 	.p_width = 74,
+ 	.p_height = 131,
+ 	.bpp = 24,
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	.freq = 60,
++#else
+ 	.freq = 58,
++#endif
+ 
+ 	/* minumun value is 0 except for wr_act time. */
+ 	.cpu_timing = {
+@@ -541,7 +561,11 @@
+ 
+ 	.timing = {
+ 		.h_fp = 52,
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.h_bp = 96,
++#else
+ 		.h_bp = 121,
++#endif
+ 		.h_sw = 4,
+ 		.v_fp = 13,
+ 		.v_fpe = 1,
+@@ -567,8 +591,13 @@
+ 	.name = "s6evr02",
+ 	.height = 1280,
+ 	.width = 720,
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	.p_width = 69,
++	.p_height = 123,
++#else
+ 	.p_width = 74,
+ 	.p_height = 131,
++#endif
+ 	.bpp = 24,
+ 	.freq = 58,
+ 	.freq_limit = 41,
+@@ -606,8 +635,13 @@
+ 	.name = "ea8061",
+ 	.height = 1280,
+ 	.width = 720,
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	.p_width = 69,
++	.p_height = 123,
++#else
+ 	.p_width = 64,
+ 	.p_height = 106,
++#endif
+ 	.bpp = 24,
+ 	.freq = 58,
+ 
+diff -u -r arch/arm/mach-exynos/midas-power.c arch/arm/mach-exynos/midas-power.c
+--- arch/arm/mach-exynos/midas-power.c	2025-09-11 20:15:56.752908587 +0900
++++ arch/arm/mach-exynos/midas-power.c	2025-09-16 19:47:08.558443768 +0900
+@@ -520,8 +520,12 @@
+ #ifdef CONFIG_SLP
+ 		.max_uV = 1100000,
+ #else
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.max_uV = 1200000,
++#else
+ 		.max_uV = 1050000,
+ #endif
++#endif
+ 		.always_on = 1,
+ 		.boot_on = 1,
+ 		.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
+@@ -547,12 +551,20 @@
+ static struct regulator_init_data max77686_buck3_data = {
+ 	.constraints = {
+ 		.name = "vdd_int range",
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.min_uV = 825000,
++#else
+ 		.min_uV = 850000,
++#endif
+ #ifdef CONFIG_SLP
+ 		.max_uV = 1150000,
+ #else
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++		.max_uV = 1300000,
++#else
+ 		.max_uV = 1100000,
+ #endif
++#endif
+ 		.always_on = 1,
+ 		.boot_on = 1,
+ 		.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,
+@@ -568,8 +580,12 @@
+ #ifdef CONFIG_SLP
+ 		.max_uV = 1100000,
+ #else
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++ 		.max_uV = 1200000,
++#else
+ 		.max_uV = 1075000,
+ #endif
++#endif
+ 		.boot_on = 1,
+ 		.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
+ 		REGULATOR_CHANGE_STATUS,
+diff -u -r arch/arm/mach-exynos/midas-sensor.c arch/arm/mach-exynos/midas-sensor.c
+--- arch/arm/mach-exynos/midas-sensor.c	2025-09-11 20:15:56.752908587 +0900
++++ arch/arm/mach-exynos/midas-sensor.c	2025-09-16 19:47:08.558443768 +0900
+@@ -156,7 +156,11 @@
+ 	int position = 0;
+ 
+ #if defined(CONFIG_MACH_M3) /* C2_SPR, M3 */
+-		position = 2; /* top/lower-right */
++#if defined(CONFIG_MACH_M3_JPN_DCM)
++	position = 4;	/*top/lower-left*/
++#else
++	position = 2; /* top/lower-right */
++#endif
+ #elif defined(CONFIG_MACH_M0_CMCC)
+ 	if (system_rev == 2)
+ 		position = 0; /* top/upper-left */
+diff -u -r arch/arm/mach-exynos/midas-sound.c arch/arm/mach-exynos/midas-sound.c
+--- arch/arm/mach-exynos/midas-sound.c	2025-09-11 20:15:56.752908587 +0900
++++ arch/arm/mach-exynos/midas-sound.c	2025-09-16 19:47:08.559443781 +0900
+@@ -558,6 +558,12 @@
+ 		i2c_register_board_info(I2C_NUM_CODEC, i2c_wm1811,
+ 						ARRAY_SIZE(i2c_wm1811));
+ 
++#elif defined(CONFIG_MACH_M3_JPN_DCM)
++		SET_PLATDATA_CODEC(NULL);
++		i2c_register_board_info(I2C_NUM_CODEC, i2c_wm1811,
++						ARRAY_SIZE(i2c_wm1811));
++
++
+ #elif defined(CONFIG_MACH_KONA)
+ 	SET_PLATDATA_CODEC(NULL);
+ 	i2c_register_board_info(I2C_NUM_CODEC, i2c_wm1811,
+diff -u -r arch/arm/mach-exynos/subsystem_restart.c arch/arm/mach-exynos/subsystem_restart.c
+--- arch/arm/mach-exynos/subsystem_restart.c	2025-09-11 20:15:56.757908671 +0900
++++ arch/arm/mach-exynos/subsystem_restart.c	2025-09-16 20:19:08.006031691 +0900
+@@ -16,6 +16,7 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
++#include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/list.h>
+ #include <linux/io.h>
+@@ -36,7 +37,7 @@
+ 
+ struct restart_wq_data {
+ 	struct subsys_data *subsys;
+-	struct wake_lock ssr_wake_lock;
++	struct wakeup_source ssr_wake_lock;
+ 	char wakelockname[64];
+ 	int coupled;
+ 	struct work_struct work;
+@@ -191,8 +192,8 @@
+ 	pr_info("[%p]: Released powerup lock!\n", current);
+ 
+ out:
+-	wake_unlock(&r_work->ssr_wake_lock);
+-	wake_lock_destroy(&r_work->ssr_wake_lock);
++	__pm_relax(&r_work->ssr_wake_lock);
++	wakeup_source_trash(&r_work->ssr_wake_lock);
+ 	kfree(r_work);
+ 	subsys->ongoing = false;
+ }
+@@ -228,11 +229,7 @@
+ 
+ 	subsys->ongoing = true;
+ 
+-	/* check debug level */
+-	if (!sec_debug_level.uint_val) {
+-		/* debug level is low, set mdm_dump to Zero */
+-		mdm_dump = 0;
+-	}
++	mdm_dump = 0;
+ 
+ 	data = kzalloc(sizeof(struct restart_wq_data), GFP_KERNEL);
+ 	if (!data) {
+@@ -247,9 +244,8 @@
+ 
+ 	snprintf(data->wakelockname, sizeof(data->wakelockname),
+ 						"ssr(%s)", subsys_name);
+-	wake_lock_init(&data->ssr_wake_lock, WAKE_LOCK_SUSPEND,
+-							data->wakelockname);
+-	wake_lock(&data->ssr_wake_lock);
++	wakeup_source_init(&data->ssr_wake_lock, data->wakelockname);
++	__pm_stay_awake(&data->ssr_wake_lock);
+ 
+ 	INIT_WORK(&data->work, subsystem_restart_wq_func);
+ 	rc = schedule_work(&data->work);
+diff -u -r drivers/media/video/Kconfig drivers/media/video/Kconfig
+--- drivers/media/video/Kconfig	2025-09-11 20:15:58.022930034 +0900
++++ drivers/media/video/Kconfig	2025-09-16 20:07:55.299804572 +0900
+@@ -653,6 +653,13 @@
+ 	---help---
+ 	  This driver supports s5c73m3 SPI
+ 
++config VIDEO_S5C73M3_WAKELOCK
++	bool "S5C73M3 flash wake lock support"
++	depends on VIDEO_S5C73M3
++	---help---
++	  Enable wake lock support for camera S5C73M3 rear flash.
++	  If unsure, say Y.
++
+ config VIDEO_SLP_S5C73M3
+ 	tristate "S5C73M3 MIPI CSI-2 supporting camera driver for slp"
+ 	depends on I2C && VIDEO_V4L2 && VIDEO_FIMC_MIPI
+diff -u -r drivers/media/video/s5c73m3.c drivers/media/video/s5c73m3.c
+--- drivers/media/video/s5c73m3.c	2025-09-11 20:15:58.090931194 +0900
++++ drivers/media/video/s5c73m3.c	2025-09-16 20:09:03.515880596 +0900
+@@ -43,6 +43,10 @@
+ #include <linux/leds-aat1290a.h>
+ #endif
+ 
++#ifdef CONFIG_VIDEO_S5C73M3_WAKELOCK
++#include <linux/wakelock.h>
++#endif
++
+ #include <media/s5c73m3_platform.h>
+ #include "s5c73m3.h"
+ 
+@@ -69,6 +73,11 @@
+ 				cam_err("i2c failed, err %d\n", x); \
+ 				return x; \
+ 			}
++
++#ifdef CONFIG_VIDEO_S5C73M3_WAKELOCK
++static bool s5c73m3_wakelock_active = false;
++#endif
++
+ struct s5c73m3_fw_version camfw_info[S5C73M3_PATH_MAX];
+ 
+ static const struct s5c73m3_frmsizeenum preview_frmsizes[] = {
+@@ -1315,6 +1324,11 @@
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_VIDEO_S5C73M3_WAKELOCK
++extern int pm_wake_lock(const char *buf);
++extern int pm_wake_unlock(const char *buf);
++#endif
++
+ static int s5c73m3_set_flash(struct v4l2_subdev *sd, int val, int recording)
+ {
+ 	struct s5c73m3_state *state = to_state(sd);
+@@ -1333,6 +1347,13 @@
+ retry:
+ 	switch (val) {
+ 	case FLASH_MODE_OFF:
++#ifdef CONFIG_VIDEO_S5C73M3_WAKELOCK
++		if (s5c73m3_wakelock_active) {
++			s5c73m3_wakelock_active = false;
++			pr_err("%s: FLASH_MODE_OFF: release wakelock\n", __func__);
++			pm_wake_unlock("flash");
++		}
++#endif
+ 		err = s5c73m3_writeb(sd, S5C73M3_FLASH_MODE,
+ 			S5C73M3_FLASH_MODE_OFF);
+ 		CHECK_ERR(err);
+@@ -1360,6 +1381,13 @@
+ 		break;
+ 
+ 	case FLASH_MODE_TORCH:
++#ifdef CONFIG_VIDEO_S5C73M3_WAKELOCK
++		if (!s5c73m3_wakelock_active) {
++			s5c73m3_wakelock_active = true;
++			pr_err("%s: FLASH_MODE_TORCH: acquire wakelock\n", __func__);
++			pm_wake_lock("flash");
++		}
++#endif
+ 		err = s5c73m3_writeb(sd, S5C73M3_FLASH_MODE,
+ 			S5C73M3_FLASH_MODE_OFF);
+ 		CHECK_ERR(err);
+diff -u -r drivers/net/usb/rmnet_usb_ctrl.c drivers/net/usb/rmnet_usb_ctrl.c
+--- drivers/net/usb/rmnet_usb_ctrl.c	2025-09-11 20:15:58.410936649 +0900
++++ drivers/net/usb/rmnet_usb_ctrl.c	2025-09-16 20:09:28.722889866 +0900
+@@ -405,7 +405,7 @@
+ 	spin_unlock(&dev->rx_lock);
+ 
+ 	wake_up(&dev->read_wait_queue);
+-	wake_lock_timeout(&dev->ctrl_wake, msecs_to_jiffies(500));
++	__pm_wakeup_event(&dev->ctrl_wake, msecs_to_jiffies(500) / HZ * 1000);
+ 
+ 	if (urb->status == -ENOENT)
+ 		return;
+@@ -1455,7 +1455,7 @@
+ 		init_usb_anchor(&dev->tx_submitted);
+ 		atomic_set(&dev->open_cnt, 0);
+ 
+-		wake_lock_init(&dev->ctrl_wake, WAKE_LOCK_SUSPEND, dev->name);
++		wakeup_source_init(&dev->ctrl_wake, dev->name);
+ #ifdef RMNET_CTRL_TX_WORK
+ 		INIT_WORK(&dev->tx_work, rmnet_ctrl_tx_work);
+ 		init_usb_anchor(&dev->tx_ready);
+diff -u -r drivers/sensor/lsm330dlc_accel.c drivers/sensor/lsm330dlc_accel.c
+--- drivers/sensor/lsm330dlc_accel.c	2025-09-11 20:15:58.738942241 +0900
++++ drivers/sensor/lsm330dlc_accel.c	2025-09-16 19:47:08.560443795 +0900
+@@ -157,7 +157,7 @@
+ 	acc->y = acc->y >> 4;
+ 	acc->z = acc->z >> 4;
+ 
+-#if defined(CONFIG_MACH_M3_JPN_DCM)
++#if 0 // defined(CONFIG_MACH_M3_JPN_DCM)
+ 	acc->y = -acc->y;
+ #endif
+ 
+diff -u -r sound/soc/samsung/m3_wm1811.c sound/soc/samsung/m3_wm1811.c
+--- sound/soc/samsung/m3_wm1811.c	2025-09-11 20:16:00.071965122 +0900
++++ sound/soc/samsung/m3_wm1811.c	2025-09-16 19:47:08.560443795 +0900
+@@ -16,7 +16,6 @@
+ #include <linux/slab.h>
+ #include <linux/workqueue.h>
+ #include <linux/input.h>
+-#include <linux/wakelock.h>
+ #include <linux/suspend.h>
+ 
+ #include <sound/soc.h>
+@@ -97,7 +96,7 @@
+ 	struct snd_soc_jack jack;
+ 	struct snd_soc_codec *codec;
+ 	struct delayed_work mic_work;
+-	struct wake_lock jackdet_wake_lock;
++	struct wakeup_source jackdet_wake_lock;
+ };
+ 
+ 
+@@ -346,7 +345,7 @@
+ 	int report;
+ 
+ 
+-	wake_lock_timeout(&wm1811->jackdet_wake_lock, 5 * HZ);
++	__pm_wakeup_event(&wm1811->jackdet_wake_lock, 5 * HZ);
+ 
+ 	/* Either nothing present or just starting detection */
+ 	if (!(status & WM8958_MICD_STS)) {
+@@ -924,8 +923,7 @@
+ 	/* To wakeup for earjack event in suspend mode */
+ 	enable_irq_wake(control->irq);
+ 
+-	wake_lock_init(&wm1811->jackdet_wake_lock,
+-					WAKE_LOCK_SUSPEND, "m3_jackdet");
++	wakeup_source_init(&wm1811->jackdet_wake_lock, "m3_jackdet");
+ 
+ 	/* To support PBA function test */
+ 	jack_class = class_create(THIS_MODULE, "audio");
