@@ -25,9 +25,9 @@ $ patch -p0 < device/samsung/sc03e/12.1-patch/jdc.diff
 ### replaced system source
   
 #### 1)  external/chromium-webview
-Apk was broken, "not apk is zip format", I used lineage-18.1 file  
+Apk was broken, "not apk is zip format", I downloaded LineageOS repository again
 ```
-  git clone -b lineage-18.1 https://github.com/LineageOS/android_external_chromium-webview
+  git clone https://github.com/LineageOS/android_external_chromium-webview
 ```
 ####  2) system/netd
   Original do not work wifi (cannot connect internet)  
