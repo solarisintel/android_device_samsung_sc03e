@@ -10,10 +10,8 @@ $ repo sync -c --current-branch  -j8 --force-sync --no-clone-bundle --no-tags
 ### replace hardware source
 ```
 hardware/samsung 
- <-- rINanDO github(https://github.com/rINanDO/android_hardware_samsung.git)  
-  
-hardware/samsung/exynos4/hal/libgralloc_ump  
- <-- modified. i9300 framebuffer is 3, sc03e framebuffers is 2, changed 3 to 2
+ <-- rINanDO github
+  git clone -b lineage-19.1 https://github.com/rINanDO/android_hardware_samsung.git
 ```
 ### Patch system source
 Maybe it will fail, so fix it while looking diff sources by the text editor
@@ -32,8 +30,8 @@ Apk was broken, "not apk is zip format", I used lineage-18.1 file
   git clone -b lineage-18.1 https://github.com/LineageOS/android_external_chromium-webview
 ```
 ####  2) system/netd
-  Original do not work wifi (cannot connect internet) ,I used html6405's repository  
-  (included patch diff files)  
+  Original do not work wifi (cannot connect internet)  
+  I used html6405's repository  
 ```  
   $ git clone -b lineage-19.1-r7 https://github.com/html6405/android_system_netd
 ```
