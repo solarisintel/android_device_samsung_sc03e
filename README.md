@@ -32,8 +32,8 @@ Apk was broken, "not apk is zip format", I used lineage-18.1 file
   git clone -b lineage-18.1 https://github.com/LineageOS/android_external_chromium-webview
 ```
 ####  2) system/netd
-  Original do not work wifi (cannot connect internet)  
-  I used html6405's repository  
+  Original do not work wifi (cannot connect internet) ,I used html6405's repository  
+  (included patch diff files)  
 ```  
   $ git clone -b lineage-19.1-r7 https://github.com/html6405/android_system_netd
 ```
