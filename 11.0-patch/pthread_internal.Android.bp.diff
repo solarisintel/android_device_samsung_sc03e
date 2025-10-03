@@ -1,0 +1,10 @@
+--- bionic/libc/Android.bp.orig	2025-10-03 12:09:09.190934855 +0900
++++ bionic/libc/Android.bp	2025-10-03 12:08:39.617919693 +0900
+@@ -37,6 +37,7 @@
+     "-Wno-deprecated-declarations",
+     "-Wno-gcc-compat",
+     "-Wframe-larger-than=2048",
++    "-Wno-unused-parameter",
+     // Try to catch typical 32-bit assumptions that break with 64-bit pointers.
+     "-Werror=pointer-to-int-cast",
+     "-Werror=int-to-pointer-cast",
