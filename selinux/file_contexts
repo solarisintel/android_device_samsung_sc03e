@@ -13,6 +13,8 @@
 /system/vendor/bin/qcks				u:object_r:qcks_exec:s0
 /system/vendor/bin/efsks			u:object_r:efsks_exec:s0
 /system/vendor/bin/qmuxd			u:object_r:qmuxd_exec:s0
+/system/vendor/bin/qmiproxy			u:object_r:qmuxd_exec:s0
+/system/vendor/bin/smdexe			u:object_r:qmuxd_exec:s0
 
 /dev/ttyUSB0					u:object_r:serial_device:s0
 #/dev/ttySAC0					u:object_r:serial_device:s0
